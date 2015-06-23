@@ -15,12 +15,12 @@ compute the completely bounded norms for other p.
 
 ## Norms implemented
 
-Taking <img src="http://www.sciweavers.org/tex2img.php?eq=%5Csigma_i%28M%29&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0" align="center" border="0" alt="\sigma_i(M)" width="47" height="18" /> to be the *i*th singular value of *M*, we have
+Taking ![sigma_i](http://www.sciweavers.org/tex2img.php?eq=%5Csigma_i%28M%29&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0) to be the *i*th singular value of a matrix *M*, we have
 
 Function name | Mathematical meaning
 --------------|---------------------
-snorm(M, p)   | <img src="http://www.sciweavers.org/tex2img.php?eq=%5C%7CM%5C%7C_p%20%3D%20%5Csqrt%5Bp%5D%7B%5Csum_%7Bi%3D1%7D%5E%7Brank%28M%29%7D%20%5B%5Csigma_i%28M%29%5D%5Ep%7D&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0" align="center" border="0" alt="\|M\|_p = \sqrt[p]{\sum_{i=1}^{rank(M)} [\sigma_i(M)]^p}" width="207" height="68" />
-cbnorm(M, p)  | <img src="http://www.sciweavers.org/tex2img.php?eq=%5Csup_k%20%5C%7B%20%5C%7C%20M%20%5Cotimes%201_k%20%28X%29%5C%7C_p%20%3A%20X%20%5Cin%20L%28%7B%5Cmathcal%20X%7D%29%2C%20%5C%7CX%5C%7C_p%20%5Cle%201%20%20%5C%7D&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0" align="center" border="0" alt="\sup_k \{ \| M \otimes 1_k (X)\|_p : X \in L({\mathcal X}), \|X\|_p \le 1  \}" width="326" height="31" />
+snorm(M, p)   | ![Schatten p-norm](http://www.sciweavers.org/tex2img.php?eq=%5C%7CM%5C%7C_p%20%3D%20%5Csqrt%5Bp%5D%7B%5Csum_%7Bi%3D1%7D%5E%7Brank%28M%29%7D%20%5B%5Csigma_i%28M%29%5D%5Ep%7D&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0)
+cbnorm(M, p)  | ![Completely bounded induced p-norm](http://www.sciweavers.org/tex2img.php?eq=%5Csup_k%20%5C%7B%20%5C%7C%20M%20%5Cotimes%201_k%20%28X%29%5C%7C_p%20%3A%20X%20%5Cin%20L%28%7B%5Cmathcal%20X%7D%29%2C%20%5C%7CX%5C%7C_p%20%5Cle%201%20%20%5C%7D&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0)
 
 Some useful aliases are
 
