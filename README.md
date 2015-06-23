@@ -17,28 +17,20 @@ compute the completely bounded norms for other p.
 
 Taking <img src="http://www.sciweavers.org/tex2img.php?eq=%5Csigma_i%28M%29&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0" align="center" border="0" alt="\sigma_i(M)" width="47" height="18" /> to be the *i*th singular value of *M*, we have
 
---|--
 Function name | Mathematical meaning
---|--
-snorm(M, p) | <img src="http://www.sciweavers.org/tex2img.php?eq=%5C%7CM%5C%7C_p%20%3D%20%5Csqrt%5Bp%5D%7B%5Csum_%7Bi%3D1%7D%5E%7Brank%28M%29%7D%20%5B%5Csigma_i%28M%29%5D%5Ep%7D&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0" align="center" border="0" alt="\|M\|_p = \sqrt[p]{\sum_{i=1}^{rank(M)} [\sigma_i(M)]^p}" width="207" height="68" />
---|--
-cbnorm(M, p) | <img src="http://www.sciweavers.org/tex2img.php?eq=%5Csup_k%20%5C%7B%20%5C%7C%20M%20%5Cotimes%201_k%20%28X%29%5C%7C_p%20%3A%20X%20%5Cin%20L%28%7B%5Cmathcal%20X%7D%29%2C%20%5C%7CX%5C%7C_p%20%5Cle%201%20%20%5C%7D&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0" align="center" border="0" alt="\sup_k \{ \| M \otimes 1_k (X)\|_p : X \in L({\mathcal X}), \|X\|_p \le 1  \}" width="326" height="31" />
+--------------|---------------------
+snorm(M, p)   | <img src="http://www.sciweavers.org/tex2img.php?eq=%5C%7CM%5C%7C_p%20%3D%20%5Csqrt%5Bp%5D%7B%5Csum_%7Bi%3D1%7D%5E%7Brank%28M%29%7D%20%5B%5Csigma_i%28M%29%5D%5Ep%7D&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0" align="center" border="0" alt="\|M\|_p = \sqrt[p]{\sum_{i=1}^{rank(M)} [\sigma_i(M)]^p}" width="207" height="68" />
+cbnorm(M, p)  | <img src="http://www.sciweavers.org/tex2img.php?eq=%5Csup_k%20%5C%7B%20%5C%7C%20M%20%5Cotimes%201_k%20%28X%29%5C%7C_p%20%3A%20X%20%5Cin%20L%28%7B%5Cmathcal%20X%7D%29%2C%20%5C%7CX%5C%7C_p%20%5Cle%201%20%20%5C%7D&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0" align="center" border="0" alt="\sup_k \{ \| M \otimes 1_k (X)\|_p : X \in L({\mathcal X}), \|X\|_p \le 1  \}" width="326" height="31" />
 
 Some useful aliases are
 
---|--|--
 Alias function | Equivalent call | Common name
---|--|--
+---------------|-----------------|------------
 trnorm(M) | snorm(M,1) | trace norm
---|--|--
 nucnorm(M) | snorm(M,1) | nuclear norm
---|--|--
 fnorm(M) | snorm(M,2) | Frobenius norm (default value for p)
---|--|--
 specnorm(M) | snorm(M,Inf) | spectral norm. This is also the matrix norm induced by the vector 2 norm (the Euclidean norm), and for this reason may be referred as the induced matrix 2 norm. So when someone refers to the 2 norm of a matrix, you may have no idea what they are talking about.
---|--|--
 cbnorm(M) | cbnorm(M,Inf) | completely bounded norm usually refers to p=∞, so this is the default
---|--|--
 dnorm(M) | cbnorm(M,1) | diamond norm
 
 ## Usage
