@@ -14,7 +14,7 @@
 
 module SchattenNorms
 
-export snorm, nucnorm, trnorm, specnorm, fnorm
+export snorm, nucnorm, trnorm, specnorm, fnorm, dnorm
 
 function nucnorm{T}(m::AbstractMatrix{T})
     snorm(m,1)
@@ -34,5 +34,7 @@ function snorm{T}(m::AbstractMatrix{T},p=2.0)
     _,s,_ = svd(m)
     return norm(s,p)
 end
+
+include("dnorm.jl")
 
 end # module
