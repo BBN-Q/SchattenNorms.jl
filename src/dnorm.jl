@@ -55,10 +55,13 @@ function E_(id_dim, ρ_dim)
     return M
 end
 
-@doc " # SchattenNorms.involution
-`involution` permutes the elements of a matrix so that it transforms the column major representation 
-of a linear map L into a matrix C that is positive iff L is completely positive, Hermitian iff L maps (vectorized) Hermitian matrices to Hermitian matrices. In other words, it corresponds to the Choi-Jamiolkoski isomorphism.
-" ->
+""" 
+Permutes the elements of a matrix so that it transforms the column
+major representation of a linear map L into a matrix C that is
+positive iff L is completely positive, Hermitian iff L maps
+(vectorized) Hermitian matrices to Hermitian matrices. In other words,
+it corresponds to the Choi-Jamiolkoski isomorphism.
+"""
 function involution(m)
     dsq = size(m,1) # we assume the matrix is square
     d   = Int(sqrt(dsq))
@@ -71,10 +74,14 @@ let # wat13b
 
     prev_dx = -1
 
-    @doc " # SchattenNorms.dnorm
-    `dnorm` computes the diamond norm of a linear superoperator (i.e., a linear transformation of operators). The superoperator must be represented
-    in column major form. In other words, it must be given by a matrix that, when multiplying a vectorized (column major) operator, it should result in the vectorized (column major) representation of the result of the transformation.
-    " ->
+    """
+    Computes the diamond norm of a linear superoperator `L` (i.e., a
+    linear transformation of operators). The superoperator must be
+    represented in column major form. In other words, it must be given
+    by a matrix that, when multiplying a vectorized (column major)
+    operator, it should result in the vectorized (column major)
+    representation of the result of the transformation.
+    """
     function dnorm(L) 
         J = involution(L)
 

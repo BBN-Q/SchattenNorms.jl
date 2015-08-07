@@ -16,18 +16,34 @@ module SchattenNorms
 
 export snorm, nucnorm, trnorm, specnorm, fnorm, dnorm
 
+"""
+Computes the nuclear norm of a matrix `m`.
+"""
 function nucnorm{T}(m::AbstractMatrix{T})
     snorm(m,1)
 end
 
+"""
+Computes the trace norm of a matrix `m`.
+"""
 trnorm(m) = nucnorm(m)
-fnorm(m) = snorm(m,2.0)
 
+"""
+Computes the Frobenius norm of a matrix `m`.
+"""
+fnorm(m) = vecnorm(m,2)
+
+"""
+Computes the spectral norm of a matrix `m` (i.e., the maximum singular value).
+"""
 function specnorm{T}(m::AbstractMatrix{T})
     _,s,_ = svd(m)
     return maximum(s)
 end
 
+"""
+Computes the `p`-Schatten norm of a matrix `m`.
+"""
 function snorm{T}(m::AbstractMatrix{T},p=2.0)
     p == 2.0 && return vecnorm(m,2)
     p == Inf && return specnorm(m)
