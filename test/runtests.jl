@@ -27,3 +27,5 @@ end
 # @test isapprox(cbnorm(E),dnorm(E'))
 # @test isapprox(cbnorm(E),cbnorm(U*E*V))
 # @test isapprox(dnorm(E),dnorm(U*E*V))
+
+include("test-dnorm.jl")

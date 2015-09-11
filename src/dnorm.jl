@@ -37,9 +37,13 @@ function retrϕ(m)
 end
 
 function ket(i,d)
-    v = spzeros(Float64,d)
+    v = spzeros(Float64,d,1)
     v[i+1] = 1.0
     return v
+end
+
+function bra(i,d)
+    return ket(i,d)'
 end
 
 # Generates linear map E_ such that E_(ρ) → 1 ⊗ ρ
@@ -85,7 +89,7 @@ let # wat13b
     function dnorm(L) 
         J = involution(L)
 
-        dx = size(J,1) |> sqrt |> round |> int
+        dx = size(J,1) |> sqrt |> x -> round(Int,x)
         dy = dx
         
         if prev_dx != dx
