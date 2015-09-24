@@ -15,12 +15,12 @@ compute the completely bounded norms for other p.
 
 ## Norms implemented
 
-Taking ![sigma_i](http://www.sciweavers.org/tex2img.php?eq=%5Csigma_i%28M%29&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0) to be the *i*th singular value of a matrix *M*, we have
+Taking <math><msub><mi>&#x03C3;</mi><mi>i</mi></msub></math> to be the *i*th singular value of a matrix *M*, we have
 
 Function name | Mathematical meaning
 --------------|---------------------
-snorm(M, p)   | ![Schatten p-norm](http://www.sciweavers.org/tex2img.php?eq=%5C%7CM%5C%7C_p%20%3D%20%5Csqrt%5Bp%5D%7B%5Csum_%7Bi%3D1%7D%5E%7Brank%28M%29%7D%20%5B%5Csigma_i%28M%29%5D%5Ep%7D&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0)
-cbnorm(M, p)  | ![Completely bounded induced p-norm](http://www.sciweavers.org/tex2img.php?eq=%5Csup_k%20%5C%7B%20%5C%7C%20M%20%5Cotimes%201_k%20%28X%29%5C%7C_p%20%3A%20X%20%5Cin%20L%28%7B%5Cmathcal%20X%7D%29%2C%20%5C%7CX%5C%7C_p%20%5Cle%201%20%20%5C%7D&bc=White&fc=Black&im=jpg&fs=12&ff=arev&edit=0)
+snorm(M, p)   | <math><mrow><mstyle displaystyle="true"><munder><mo>&#x02211;</mo><mi>i</mi></munder></mstyle><msubsup><mi>&#x003C3;</mi><mi>i</mi><mi>p</mi></msubsup></mrow></math>
+cbnorm(M, p)  | <math><mrow><mstyle displaystyle="true"><munder><mi>sup</mi><mi>k</mi></munder></mstyle><mrow><mo form="prefix">{</mo><mo>&#x02016;</mo><mi>M</mi><mo>&#x02297;</mo><msub><mn>1</mn><mi>k</mi></msub><mrow><mo form="prefix">(</mo><mi>X</mi><mo form="postfix">)</mo></mrow><msub><mo>&#x02016;</mo><mi>p</mi></msub><mo>:</mo><mi>X</mi><mo>&#x02208;</mo><mi>L</mi><mrow><mo form="prefix">(</mo><mi>&#x1D4B3;</mi><mo form="postfix">)</mo></mrow><mo>,</mo><mo>&#x02016;</mo><mi>X</mi><msub><mo>&#x02016;</mo><mi>p</mi></msub><mo>=</mo><mn>1</mn><mo form="postfix">}</mo></mrow></mrow></math>
 
 Some useful aliases are
 
