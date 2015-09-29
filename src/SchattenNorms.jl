@@ -19,36 +19,33 @@ export snorm, nucnorm, trnorm, specnorm, fnorm, dnorm
 """
 Computes the nuclear norm of a matrix `m`.
 """
-function nucnorm{T}(m::AbstractMatrix{T})
-    snorm(m,1)
+function nucnorm(m::AbstractMatrix)
+    norm(svdvals(m),1)
 end
 
 """
 Computes the trace norm of a matrix `m`.
 """
-trnorm(m) = nucnorm(m)
+trnorm(m::AbstractMatrix) = nucnorm(m)
 
 """
 Computes the Frobenius norm of a matrix `m`.
 """
-fnorm(m) = vecnorm(m,2)
+fnorm(m::AbstractMatrix) = vecnorm(m,2)
 
 """
 Computes the spectral norm of a matrix `m` (i.e., the maximum singular value).
 """
-function specnorm{T}(m::AbstractMatrix{T})
-    _,s,_ = svd(m)
-    return maximum(s)
+function specnorm(m::AbstractMatrix)
+    return norm(svdvals(m),Inf)
 end
 
 """
 Computes the `p`-Schatten norm of a matrix `m`.
 """
-function snorm{T}(m::AbstractMatrix{T},p=2.0)
+function snorm(m::AbstractMatrix,p=2.0)
     p == 2.0 && return vecnorm(m,2)
-    p == Inf && return specnorm(m)
-    _,s,_ = svd(m)
-    return norm(s,p)
+    return norm(svdvals(m),p)
 end
 
 include("dnorm.jl")
