@@ -81,7 +81,7 @@ SCS.jl and Convex.jl, for the completely bounded norms.
   than the completely bounded 1 norm (the diamond norm). Adding a
   function just for that would be nice.
 
-* The diamond norm distance between two unitary maps is also much easier to compute. A function for that would be nice.
+* The diamond norm distance between two unitary maps is also much easier to compute -- see, e.g., [Lecture 20 for John Watrous's 2011 Quantum Information course](https://cs.uwaterloo.ca/~watrous/CS766/LectureNotes/20.pdf) -- so a customized function would be nice.
 
 ## License
 
