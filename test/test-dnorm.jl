@@ -25,8 +25,10 @@ pauli = Matrix{Complex128}[ [1 0; 0 1],
                             [0 -im; im 0],
                             [1 0; 0 -1] ]
 
-u = liou(rand_unitary(2))
-v = liou(rand_unitary(2))
+u = rand_unitary(2)
+uu = liou(u)
+v = rand_unitary(2)
+vv = liou(v)
 
 #ee = rand_cp_map(2)
 #ff = rand_cp_map(2)
@@ -52,25 +54,25 @@ v = liou(rand_unitary(2))
 @test_approx_eq_eps 2.0 dnorm(liou(z)-liou(y)) 1e-5
 @test_approx_eq_eps 2.0 dnorm(z,y) 1e-5
 
-@test_approx_eq_eps 2.0 dnorm(u*eye(4)-u*liou(x)) 1e-5
-@test_approx_eq_eps 2.0 dnorm(u*eye(4),u*liou(x)) 1e-5
+@test_approx_eq_eps 2.0 dnorm(uu*eye(4)-uu*liou(x)) 1e-5
+@test_approx_eq_eps 2.0 dnorm(uu*eye(4),uu*liou(x)) 1e-5
 
-@test_approx_eq_eps 2.0 dnorm(u*eye(4)-u*liou(z)) 1e-5
-@test_approx_eq_eps 2.0 dnorm(u*eye(4),u*liou(z)) 1e-5
+@test_approx_eq_eps 2.0 dnorm(uu*eye(4)-uu*liou(z)) 1e-5
+@test_approx_eq_eps 2.0 dnorm(uu*eye(4),uu*liou(z)) 1e-5
 
-@test_approx_eq_eps 2.0 dnorm(u*eye(4)-u*liou(y)) 1e-5
-@test_approx_eq_eps 2.0 dnorm(u*eye(4),u*liou(y)) 1e-5
+@test_approx_eq_eps 2.0 dnorm(uu*eye(4)-uu*liou(y)) 1e-5
+@test_approx_eq_eps 2.0 dnorm(uu*eye(4),uu*liou(y)) 1e-5
 
-@test_approx_eq_eps 2.0 dnorm(u*liou(x)-u*liou(y)) 1e-5
-@test_approx_eq_eps 2.0 dnorm(u*liou(x),u*liou(y)) 1e-5
+@test_approx_eq_eps 2.0 dnorm(uu*liou(x)-uu*liou(y)) 1e-5
+@test_approx_eq_eps 2.0 dnorm(uu*liou(x),uu*liou(y)) 1e-5
 
-@test_approx_eq_eps 2.0 dnorm(u*liou(x)-u*liou(z)) 1e-5
-@test_approx_eq_eps 2.0 dnorm(u*liou(x),u*liou(z)) 1e-5
+@test_approx_eq_eps 2.0 dnorm(uu*liou(x)-uu*liou(z)) 1e-5
+@test_approx_eq_eps 2.0 dnorm(uu*liou(x),uu*liou(z)) 1e-5
 
-@test_approx_eq_eps 2.0 dnorm(u*liou(z)-u*liou(y)) 1e-5
-@test_approx_eq_eps 2.0 dnorm(u*liou(z),u*liou(y)) 1e-5
+@test_approx_eq_eps 2.0 dnorm(uu*liou(z)-uu*liou(y)) 1e-5
+@test_approx_eq_eps 2.0 dnorm(uu*liou(z),uu*liou(y)) 1e-5
 
-@test_approx_eq_eps dnorm(u,v) dnorm(u-v) 1e-5
+@test_approx_eq_eps dnorm(u,v) dnorm(uu-vv) 1e-5
 
 pc1 = sum([ p1[ii+1]*liou(pauli[ii+1]) for ii in 0:3])
 pc2 = sum([ p2[ii+1]*liou(pauli[ii+1]) for ii in 0:3])
@@ -78,12 +80,12 @@ calc_dnorm1 = dnorm(pc1-pc2)
 
 @test_approx_eq_eps pauli_dnorm calc_dnorm1  1e-5
 
-duv  = dnorm(u-v)
+duv  = dnorm(uu-vv)
 @time begin 
-    duv2 = dnorm(u*v'-eye(4))
-    duv3 = dnorm(v'u-eye(4))
-    duv4 = dnorm(eye(4)-u'*v)
-    duv5 = dnorm(eye(4)-v*u')    
+    duv2 = dnorm(uu*vv'-eye(4))
+    duv3 = dnorm(vv'*uu-eye(4))
+    duv4 = dnorm(eye(4)-uu'*vv)
+    duv5 = dnorm(eye(4)-vv*uu')    
 end
 
 @test_approx_eq_eps duv duv2 1e-5
@@ -91,18 +93,25 @@ end
 @test_approx_eq_eps duv duv4 1e-5
 @test_approx_eq_eps duv duv5 1e-5
 
-duv  = dnorm(u,v)
-@time begin 
-    duv2 = dnorm(u*v',eye(4))
-    duv3 = dnorm(v'u,eye(4))
-    duv4 = dnorm(eye(4),u'*v)
-    duv5 = dnorm(eye(4),v*u')    
+for i in 1:20
+    for d in [2,3,4]
+        u = rand_unitary(d)
+        uu = liou(u)
+        v = rand_unitary(d)
+        vv = liou(v)
+        
+        duv  = dnorm(u,v)
+        duv2 = dnorm(u*v',eye(d))
+        duv3 = dnorm(v'u,eye(d))
+        duv4 = dnorm(eye(d),u'*v)
+        duv5 = dnorm(eye(d),v*u')    
+        
+        @test_approx_eq_eps duv duv2 1e-10
+        @test_approx_eq_eps duv duv3 1e-10
+        @test_approx_eq_eps duv duv4 1e-10
+        @test_approx_eq_eps duv duv5 1e-10
+    end
 end
-
-@test_approx_eq_eps duv duv2 1e-5
-@test_approx_eq_eps duv duv3 1e-5
-@test_approx_eq_eps duv duv4 1e-5
-@test_approx_eq_eps duv duv5 1e-5
 
 #def = dnorm(ee-ff)
 #@time begin 
