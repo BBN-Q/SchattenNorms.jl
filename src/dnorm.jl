@@ -136,7 +136,7 @@ let # wat13b
         ρ1r = Variable(dx, dx)
         ρ1i = Variable(dx, dx)
 
-        prob = maximize( trace( Jr * Xr + Ji * Xi ) )
+        prob = maximize( trace( Jr*Xr + Ji*Xi ) )
 
         prob.constraints += trace(ρ0r) == 1
         prob.constraints += trace(ρ0i) == 0
