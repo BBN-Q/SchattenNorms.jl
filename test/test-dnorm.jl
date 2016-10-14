@@ -38,7 +38,7 @@ v = liou(rand_unitary(2))
 @test_approx_eq_eps 2.0 dnorm(eye(2),x) 1e-5
 
 @test_approx_eq_eps 2.0 dnorm(eye(4)-liou(z,z)) 1e-5
-@test_approx_eq_eps 2.0 dnorm(eye(4),z) 1e-5
+@test_approx_eq_eps 2.0 dnorm(eye(2),z) 1e-5
 
 @test_approx_eq_eps 2.0 dnorm(eye(4)-liou(y,y)) 1e-5
 @test_approx_eq_eps 2.0 dnorm(eye(2),y) 1e-5

@@ -12,7 +12,7 @@ end
 
 function dist_to_neighbour( ar )
     d = length(ar);
-    return abs(ar - ar[mod([1:d]-2,d)+1]);
+    return abs(ar - ar[mod([1:d;]-2,d)+1]);
 end
 
 """
@@ -31,7 +31,8 @@ function worstfidelity(u::Matrix, v::Matrix)
     end;
   
     e  = eigvals(u'*v); # eigenvalues of u'*v
-    es = sortrows(hcat(e,angle(e)+pi),by=x->x[2])
+
+    es = sortrows(hcat(e,angle(e)+pi),by=x->real(x[2]))
     d  = es[:,1]
     f  = 0
 
@@ -52,13 +53,13 @@ function worstfidelity(u::Matrix, v::Matrix)
             dn[1] = 2*pi-sum(dn[2:n])  # the sum of the angular separations is 2*pi
                                        # and the boundary cases are funny
                                        # so it is easiest to calc it this way
-            dn = find(dn > pi);
-            if length(dn>0)==1
+            dn = find(dn .> pi);
+            if sum(dn.>0)==1
                 f = orig_to_line(d[dn],d[mod(dn-2,n)+1]);
             end
         end
     end
-    return f^2
+    return abs(f)^2
 end
 
 """
