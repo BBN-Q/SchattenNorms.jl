@@ -15,11 +15,11 @@ compute the completely bounded norms for other p.
 
 ## Norms implemented
 
-Taking σᵢ to be the *i*th singular value of a matrix *M*, we have
+Taking σᵢ(M) to be the *i*th singular value of a matrix *M*, we have
 
 Function name | Mathematical meaning
 --------------|---------------------
-snorm(M, p)   | ∑ᵢ (σᵢ)ᵖ
+snorm(M, p)   | ∑ᵢ (σᵢ(M))ᵖ
 cbnorm(M, r)  | supᵢ {‖M⊗1ᵢ(X)‖ᵣ  :  ‖X‖ᵣ=1}
 
 Some useful aliases are
@@ -28,11 +28,22 @@ Alias function | Equivalent call | Common name
 ---------------|-----------------|------------
 trnorm(M) | snorm(M,1) | trace norm
 nucnorm(M) | snorm(M,1) | nuclear norm
-fnorm(M) | snorm(M,2), snorm(M) | Frobenius norm
-specnorm(M) | snorm(M,Inf) | spectral norm. This is also the matrix norm induced by the vector 2 norm (the Euclidean norm), and for this reason may be referred as the induced matrix 2 norm. So when someone refers to the 2 norm of a matrix, you may have no idea what they are talking about.
+fnorm(M) | snorm(M,2), snorm(M) | Frobenius norm (default for `snorm`)
+specnorm(M) | snorm(M,Inf) | spectral norm. 
 cbnorm(M) | cbnorm(M,Inf) | completely bounded norm usually refers to p=∞, so this is the default
 dnorm(M) | cbnorm(M,1) | diamond norm
 dnorm(U,V) | cbnorm(liou(U)-liou(V),1) | diamond norm distance between two unitaries
+
+Note that the spectral norm is also the matrix norm induced by the vector 2 
+norm (the Euclidean norm), and for this reason may be referred as the induced 
+matrix 2 norm. So when someone refers to the 2 norm of a matrix, it may be unclear 
+whether are refering to the Schatten 2-norm or the Schatten ∞-norm.
+
+## Utility functions
+
+Function name | Common name | Mathematical meaning
+--------------|-------------|--------
+worstfideilty(u, v) | Worst case output state (Jozsa) fidelity | min {|⟨ψ | v⁺ u |ψ⟩|² : |⟨ψ|ψ⟩|² = 1}
 
 ## Usage
 
