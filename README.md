@@ -43,7 +43,7 @@ whether are refering to the Schatten 2-norm or the Schatten ∞-norm.
 
 Function name | Common name | Mathematical meaning
 --------------|-------------|--------
-worstfideilty(u, v) | Worst case output state (Jozsa) fidelity | min {|⟨ψ | v⁺ u |ψ⟩|² : |⟨ψ|ψ⟩|² = 1}
+worstfidelity(u, v) | Worst case output state (Jozsa) fidelity | min {❘⟨ψ ❘ v⁺ u ❘ψ⟩❘² : ❘⟨ψ❘ψ⟩❘² = 1}
 
 ## Usage
 
