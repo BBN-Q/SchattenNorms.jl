@@ -16,15 +16,6 @@ end
 cnot = [1. 0. 0. 0.; 0. 1. 0. 0.; 0. 0. 0. 1.; 0. 0. 1. 0.]
 cnotL = liou(cnot)
 
-#Check the diamond norm of randomly chosen Pauli channels
-p1 = rand(4); p1 = p1/sum(p1)
-p2 = rand(4); p2 = p2/sum(p2)
-pauli_dnorm = sum(abs(p1-p2))
-pauli = Matrix{Complex128}[ [1 0; 0 1], 
-                            [0 1; 1 0],
-                            [0 -im; im 0],
-                            [1 0; 0 -1] ]
-
 u = rand_unitary(2)
 uu = liou(u)
 v = rand_unitary(2)
@@ -32,6 +23,8 @@ vv = liou(v)
 
 #ee = rand_cp_map(2)
 #ff = rand_cp_map(2)
+
+println("Testing maximal dnorm examples ...")
 
 @test_approx_eq_eps 2.0 dnorm(cnotL-eye(16)) 1e-5
 @test_approx_eq_eps 2.0 dnorm(cnotL,eye(16)) 1e-5
@@ -72,13 +65,22 @@ vv = liou(v)
 @test_approx_eq_eps 2.0 dnorm(uu*liou(z)-uu*liou(y)) 1e-5
 @test_approx_eq_eps 2.0 dnorm(uu*liou(z),uu*liou(y)) 1e-5
 
-@test_approx_eq_eps dnorm(u,v) dnorm(uu-vv) 1e-5
+println("Testing dnorm for Pauli channels ...")
 
-pc1 = sum([ p1[ii+1]*liou(pauli[ii+1]) for ii in 0:3])
-pc2 = sum([ p2[ii+1]*liou(pauli[ii+1]) for ii in 0:3])
-calc_dnorm1 = dnorm(pc1-pc2)
+pauli = Matrix{Complex128}[eye(2), x, y, z]
+for i in 1:10
+    p1 = rand(4); p1 = p1/sum(p1)
+    p2 = rand(4); p2 = p2/sum(p2)
+    pauli_dnorm = sum(abs(p1-p2))
+        
+    pc1 = sum([ p1[ii+1]*liou(pauli[ii+1]) for ii in 0:3])
+    pc2 = sum([ p2[ii+1]*liou(pauli[ii+1]) for ii in 0:3])
+    calc_dnorm1 = dnorm(pc1-pc2)
+    
+    @test_approx_eq_eps pauli_dnorm calc_dnorm1  1e-5
+end
 
-@test_approx_eq_eps pauli_dnorm calc_dnorm1  1e-5
+println("Testing unitary invariance of dnorm ...")
 
 duv  = dnorm(uu-vv)
 @time begin 
@@ -92,6 +94,19 @@ end
 @test_approx_eq_eps duv duv3 1e-5
 @test_approx_eq_eps duv duv4 1e-5
 @test_approx_eq_eps duv duv5 1e-5
+
+println("Testing dnorm for difference of unitary transformations ...")
+
+for i in 1:20
+    for d in [2,3,4]
+        u = rand_unitary(d)
+        uu = liou(u)
+        v = rand_unitary(d)
+        vv = liou(v)
+        
+        @test_approx_eq_eps dnorm(u,v) dnorm(uu-vv) 1e-4
+    end
+end
 
 for i in 1:20
     for d in [2,3,4]

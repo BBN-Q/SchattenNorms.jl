@@ -106,6 +106,8 @@ let # wat13b
     prev_dx = -1
 
     """
+    dnorm(L) 
+
     Computes the diamond norm of a linear superoperator `L` (i.e., a
     linear transformation of operators). The superoperator must be
     represented in column major form. In other words, it must be given
@@ -134,7 +136,7 @@ let # wat13b
         ρ1r = Variable(dx, dx)
         ρ1i = Variable(dx, dx)
 
-        prob = maximize( retrϕ( ϕ(Jr,Ji)'*ϕ(Xr,Xi) ) )
+        prob = maximize( trace( Jr * Xr + Ji * Xi ) )
 
         prob.constraints += trace(ρ0r) == 1
         prob.constraints += trace(ρ0i) == 0
