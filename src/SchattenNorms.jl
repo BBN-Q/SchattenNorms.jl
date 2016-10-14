@@ -12,6 +12,7 @@
 #     See the License for the specific language governing permissions and
 #     limitations under the License.
 
+VERSION >= v"0.4.0-dev+6521" && __precompile__()
 module SchattenNorms
 
 export snorm, nucnorm, trnorm, specnorm, fnorm, dnorm, worstfidelity
