@@ -15,12 +15,12 @@ compute the completely bounded norms for other p.
 
 ## Norms implemented
 
-Taking <math><msub><mi>&#x03C3;</mi><mi>i</mi></msub></math> to be the *i*th singular value of a matrix *M*, we have
+Taking σᵢ to be the *i*th singular value of a matrix *M*, we have
 
 Function name | Mathematical meaning
 --------------|---------------------
-snorm(M, p)   | <math><mrow><mstyle displaystyle="true"><munder><mo>&#x02211;</mo><mi>i</mi></munder></mstyle><msubsup><mi>&#x003C3;</mi><mi>i</mi><mi>p</mi></msubsup></mrow></math>
-cbnorm(M, p)  | <math><mrow><mstyle displaystyle="true"><munder><mi>sup</mi><mi>k</mi></munder></mstyle><mrow><mo form="prefix">{</mo><mo>&#x02016;</mo><mi>M</mi><mo>&#x02297;</mo><msub><mn>1</mn><mi>k</mi></msub><mrow><mo form="prefix">(</mo><mi>X</mi><mo form="postfix">)</mo></mrow><msub><mo>&#x02016;</mo><mi>p</mi></msub><mo>:</mo><mi>X</mi><mo>&#x02208;</mo><mi>L</mi><mrow><mo form="prefix">(</mo><mi>&#x1D4B3;</mi><mo form="postfix">)</mo></mrow><mo>,</mo><mo>&#x02016;</mo><mi>X</mi><msub><mo>&#x02016;</mo><mi>p</mi></msub><mo>=</mo><mn>1</mn><mo form="postfix">}</mo></mrow></mrow></math>
+snorm(M, p)   | ∑ᵢ (σᵢ)ᵖ
+cbnorm(M, r)  | supᵢ {‖M⊗1ᵢ(X)‖ᵣ  :  ‖X‖ᵣ=1}
 
 Some useful aliases are
 
@@ -72,16 +72,16 @@ SCS.jl and Convex.jl, for the completely bounded norms.
 
 ## TODO
 
-* The implementation of the completely bounded 1 and ∞ norms is
+* [ ] The implementation of the completely bounded 1 and ∞ norms is
   somewhat tailored to transformations between isomorphic spaces. It
   should be easy to make it more general.
 
-* The distance between two quantum channels (i.e., trace preserving,
+* [ ] The distance between two quantum channels (i.e., trace preserving,
   completely positive linear maps of operators) is "easier" to compute
   than the completely bounded 1 norm (the diamond norm). Adding a
   function just for that would be nice.
 
-* The diamond norm distance between two unitary maps is also much easier to compute -- see, e.g., [Lecture 20 for John Watrous's 2011 Quantum Information course](https://cs.uwaterloo.ca/~watrous/CS766/LectureNotes/20.pdf) -- so a customized function would be nice.
+* [ ] The diamond norm distance between two unitary maps is also much easier to compute -- see, e.g., [Lecture 20 for John Watrous's 2011 Quantum Information course](https://cs.uwaterloo.ca/~watrous/CS766/LectureNotes/20.pdf) -- so a customized function would be nice.
 
 ## License
 
