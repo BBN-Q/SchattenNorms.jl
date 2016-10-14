@@ -32,6 +32,7 @@ fnorm(M) | snorm(M,2), snorm(M) | Frobenius norm
 specnorm(M) | snorm(M,Inf) | spectral norm. This is also the matrix norm induced by the vector 2 norm (the Euclidean norm), and for this reason may be referred as the induced matrix 2 norm. So when someone refers to the 2 norm of a matrix, you may have no idea what they are talking about.
 cbnorm(M) | cbnorm(M,Inf) | completely bounded norm usually refers to p=∞, so this is the default
 dnorm(M) | cbnorm(M,1) | diamond norm
+dnorm(U,V) | cbnorm(U-V,1) | diamond norm distance between two unitaries
 
 ## Usage
 
@@ -81,7 +82,7 @@ SCS.jl and Convex.jl, for the completely bounded norms.
   than the completely bounded 1 norm (the diamond norm). Adding a
   function just for that would be nice.
 
-* [ ] The diamond norm distance between two unitary maps is also much easier to compute -- see, e.g., [Lecture 20 for John Watrous's 2011 Quantum Information course](https://cs.uwaterloo.ca/~watrous/CS766/LectureNotes/20.pdf) -- so a customized function would be nice.
+* [X] The diamond norm distance between two unitary maps is also much easier to compute -- see, e.g., [Lecture 20 for John Watrous's 2011 Quantum Information course](https://cs.uwaterloo.ca/~watrous/CS766/LectureNotes/20.pdf) -- so a customized function would be nice.
 
 ## License
 
