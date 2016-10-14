@@ -18,6 +18,8 @@ module SchattenNorms
 export snorm, nucnorm, trnorm, specnorm, fnorm, dnorm, worstfidelity
 
 """
+nucnorm(m)
+
 Computes the nuclear norm of a matrix `m`.
 """
 function nucnorm(m::AbstractMatrix)
@@ -25,16 +27,22 @@ function nucnorm(m::AbstractMatrix)
 end
 
 """
+trnorm(m)
+
 Computes the trace norm of a matrix `m`.
 """
 trnorm(m::AbstractMatrix) = nucnorm(m)
 
 """
+fnorm(m)
+
 Computes the Frobenius norm of a matrix `m`.
 """
 fnorm(m::AbstractMatrix) = vecnorm(m,2)
 
 """
+specnorm(m)
+
 Computes the spectral norm of a matrix `m` (i.e., the maximum singular value).
 """
 function specnorm(m::AbstractMatrix)
@@ -42,6 +50,8 @@ function specnorm(m::AbstractMatrix)
 end
 
 """
+snorm(m,p=2)
+
 Computes the `p`-Schatten norm of a matrix `m`.
 """
 function snorm(m::AbstractMatrix,p=2.0)
