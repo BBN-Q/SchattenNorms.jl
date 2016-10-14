@@ -14,7 +14,7 @@
 
 module SchattenNorms
 
-export snorm, nucnorm, trnorm, specnorm, fnorm, dnorm
+export snorm, nucnorm, trnorm, specnorm, fnorm, dnorm, worstfidelity
 
 """
 Computes the nuclear norm of a matrix `m`.
@@ -49,5 +49,6 @@ function snorm(m::AbstractMatrix,p=2.0)
 end
 
 include("dnorm.jl")
+include("dnormu.jl")
 
 end # module
