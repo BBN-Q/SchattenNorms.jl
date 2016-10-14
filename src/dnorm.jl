@@ -37,21 +37,21 @@ end
 Extract the real part of a complex matrix represented as a real matrix
 """
 function ϕr(m)
-    m[1:end/2,1:end/2]
+    m[1:div(end,2),1:div(end,2)]
 end
 
 """
-Extract the real part of a complex matrix represented as a real matrix.
+Extract the imag part of a complex matrix represented as a real matrix.
 """
 function ϕi(m)
-    m[1:end/2,end/2+1:end]
+    m[1:div(end,2),div(end,2)+1:end]
 end
 
 """
-Extract the real part of a complex matrix represented as a real matrix.
+Extract the real and imag parts of a complex matrix represented as a real matrix.
 """
 function ϕinv(m)
-   ϕr(m), ϕi(m)
+   ϕr(m) + 1im*ϕi(m)
 end
 
 """
@@ -155,10 +155,10 @@ let # wat13b
         solve!(prob)
 
         if prob.status != :Optimal
-            println("DNORM error.")
-            println("Input: $(L)")
-            println("Input's Choi spectrum: $(eigvals(liou2choi(L)))")
-            error("Could not compute the diamond norm.")
+            #println("DNORM warning.")
+            #println("Input: $(L)")
+            #println("Input's Choi spectrum: $(eigvals(liou2choi(L)))")
+            warn("Diamond norm calculation did not converge.")
         end
 
         return prob.optval
