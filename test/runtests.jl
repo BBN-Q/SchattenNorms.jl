@@ -1,6 +1,8 @@
 using SchattenNorms
 using Base.Test
 
+srand(314159)
+
 @test isapprox(snorm([1 0; 0 -1]),sqrt(2.0))
 @test isapprox(snorm([1 0; 0 -1],1.0),2.0)
 @test isapprox(snorm([1 0; 0 -1],Inf),1.0)
