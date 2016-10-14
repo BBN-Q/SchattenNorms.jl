@@ -32,7 +32,7 @@ fnorm(M) | snorm(M,2), snorm(M) | Frobenius norm
 specnorm(M) | snorm(M,Inf) | spectral norm. This is also the matrix norm induced by the vector 2 norm (the Euclidean norm), and for this reason may be referred as the induced matrix 2 norm. So when someone refers to the 2 norm of a matrix, you may have no idea what they are talking about.
 cbnorm(M) | cbnorm(M,Inf) | completely bounded norm usually refers to p=∞, so this is the default
 dnorm(M) | cbnorm(M,1) | diamond norm
-dnorm(U,V) | cbnorm(U-V,1) | diamond norm distance between two unitaries
+dnorm(U,V) | cbnorm(liou(U)-liou(V),1) | diamond norm distance between two unitaries
 
 ## Usage
 
