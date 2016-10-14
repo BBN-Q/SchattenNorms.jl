@@ -23,7 +23,7 @@ fidelity between `U*a` and `V*a`, where `a` is a complex vector
 with norm 1. That is, `worstfidelity(U,V)` is equal to the minimum
 of `|a'*U'*V*a|^2` over all complex vectors `a` with unit norm.
 """
-function dnorm(u::Matrix, v::Matrix)
+function worstfidelity(u::Matrix, v::Matrix)
 
     # some very basic error checking
     if size(u) != size(v)
