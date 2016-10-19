@@ -84,7 +84,7 @@ SCS.jl and Convex.jl, for the completely bounded norms.
   somewhat tailored to transformations between isomorphic spaces. It
   should be easy to make it more general.
 
-* [ ] The distance between two quantum channels (i.e., trace preserving,
+* [X] The distance between two quantum channels (i.e., trace preserving,
   completely positive linear maps of operators) is "easier" to compute
   than the completely bounded 1 norm (the diamond norm). Adding a
   function just for that would be nice.
