@@ -95,7 +95,7 @@ SCS.jl and Convex.jl, for the completely bounded norms.
 
 Apache Lincense 2.0 ([summary](https://tldrlegal.com/license/apache-license-2.0-(apache-2.0)))
 
-## Copywright
+## Copyright
 
 Raytheon BBN Technologies 2015
 
