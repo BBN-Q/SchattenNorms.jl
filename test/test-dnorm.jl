@@ -1,6 +1,8 @@
 using Base.Test, Convex, SCS, SchattenNorms
 
-set_default_solver(SCSSolver(verbose=0))
+import Base.kron
+
+set_default_solver(SCSSolver(verbose=0, eps=1e-6, max_iters=5_000))
 
 x,y,z = [0 1; 1 0], [0 -1im; 1im 0], [1 0; 0 -1]
 
@@ -27,43 +29,56 @@ vv = liou(v)
 println("Testing maximal dnorm examples ...")
 
 @test_approx_eq_eps 2.0 dnorm(cnotL-eye(16)) 1e-5
-@test_approx_eq_eps 2.0 dnorm(cnotL,eye(16)) 1e-5
+@test_approx_eq_eps 2.0 dnorm(cnot,eye(4)) 1e-5
+@test_approx_eq_eps 2.0 dnormcptp(cnotL,eye(16)) 1e-5
 
 @test_approx_eq_eps 2.0 dnorm(eye(4)-liou(x)) 1e-5
+@test_approx_eq_eps 2.0 dnormcptp(eye(4),liou(x)) 1e-5
 @test_approx_eq_eps 2.0 dnorm(eye(2),x) 1e-5
 
 @test_approx_eq_eps 2.0 dnorm(eye(4)-liou(z)) 1e-5
+@test_approx_eq_eps 2.0 dnormcptp(eye(4),liou(z)) 1e-5
 @test_approx_eq_eps 2.0 dnorm(eye(2),z) 1e-5
 
 @test_approx_eq_eps 2.0 dnorm(eye(4)-liou(y)) 1e-5
+@test_approx_eq_eps 2.0 dnormcptp(eye(4),liou(y)) 1e-5
 @test_approx_eq_eps 2.0 dnorm(eye(2),y) 1e-5
 
 @test_approx_eq_eps 2.0 dnorm(liou(x)-liou(y)) 1e-5
+@test_approx_eq_eps 2.0 dnormcptp(liou(x),liou(y)) 1e-5
 @test_approx_eq_eps 2.0 dnorm(x,y) 1e-5
 
 @test_approx_eq_eps 2.0 dnorm(liou(x)-liou(z)) 1e-5
+@test_approx_eq_eps 2.0 dnormcptp(liou(x),liou(z)) 1e-5
 @test_approx_eq_eps 2.0 dnorm(x,z) 1e-5
 
 @test_approx_eq_eps 2.0 dnorm(liou(z)-liou(y)) 1e-5
+@test_approx_eq_eps 2.0 dnormcptp(liou(z),liou(y)) 1e-5
 @test_approx_eq_eps 2.0 dnorm(z,y) 1e-5
 
 @test_approx_eq_eps 2.0 dnorm(uu*eye(4)-uu*liou(x)) 1e-5
-@test_approx_eq_eps 2.0 dnorm(uu*eye(4),uu*liou(x)) 1e-5
+@test_approx_eq_eps 2.0 dnormcptp(uu*eye(4),uu*liou(x)) 1e-5
+@test_approx_eq_eps 2.0 dnorm(u*eye(2),u*x) 1e-5
 
 @test_approx_eq_eps 2.0 dnorm(uu*eye(4)-uu*liou(z)) 1e-5
-@test_approx_eq_eps 2.0 dnorm(uu*eye(4),uu*liou(z)) 1e-5
+@test_approx_eq_eps 2.0 dnormcptp(uu*eye(4),uu*liou(z)) 1e-5
+@test_approx_eq_eps 2.0 dnorm(u*eye(2),u*z) 1e-5
 
 @test_approx_eq_eps 2.0 dnorm(uu*eye(4)-uu*liou(y)) 1e-5
-@test_approx_eq_eps 2.0 dnorm(uu*eye(4),uu*liou(y)) 1e-5
+@test_approx_eq_eps 2.0 dnormcptp(uu*eye(4),uu*liou(y)) 1e-5
+@test_approx_eq_eps 2.0 dnorm(u*eye(2),u*y) 1e-5
 
 @test_approx_eq_eps 2.0 dnorm(uu*liou(x)-uu*liou(y)) 1e-5
-@test_approx_eq_eps 2.0 dnorm(uu*liou(x),uu*liou(y)) 1e-5
+@test_approx_eq_eps 2.0 dnormcptp(uu*liou(x),uu*liou(y)) 1e-5
+@test_approx_eq_eps 2.0 dnorm(u*x,u*y) 1e-5
 
 @test_approx_eq_eps 2.0 dnorm(uu*liou(x)-uu*liou(z)) 1e-5
-@test_approx_eq_eps 2.0 dnorm(uu*liou(x),uu*liou(z)) 1e-5
+@test_approx_eq_eps 2.0 dnormcptp(uu*liou(x),uu*liou(z)) 1e-5
+@test_approx_eq_eps 2.0 dnorm(u*x,u*z) 1e-5
 
 @test_approx_eq_eps 2.0 dnorm(uu*liou(z)-uu*liou(y)) 1e-5
-@test_approx_eq_eps 2.0 dnorm(uu*liou(z),uu*liou(y)) 1e-5
+@test_approx_eq_eps 2.0 dnormcptp(uu*liou(z),uu*liou(y)) 1e-5
+@test_approx_eq_eps 2.0 dnorm(u*z,u*y) 1e-5
 
 println("Testing dnorm for Pauli channels ...")
 
@@ -71,11 +86,12 @@ pauli = Matrix{Complex128}[eye(2), x, y, z]
 for i in 1:10
     p1 = rand(4); p1 = p1/sum(p1)
     p2 = rand(4); p2 = p2/sum(p2)
-    pauli_dnorm = sum(abs(p1-p2))
+    pauli_dnorm = norm(p1-p2,1)
         
     pc1 = sum([ p1[ii+1]*liou(pauli[ii+1]) for ii in 0:3])
     pc2 = sum([ p2[ii+1]*liou(pauli[ii+1]) for ii in 0:3])
-    calc_dnorm1 = dnorm(pc1-pc2)
+    #calc_dnorm1 = dnorm(pc1-pc2)
+    calc_dnorm1 = dnormcptp(pc1,pc2)
     
     @test_approx_eq_eps pauli_dnorm calc_dnorm1  1e-5
 end
@@ -104,7 +120,7 @@ for i in 1:20
         v = rand_unitary(d)
         vv = liou(v)
         
-        @test_approx_eq_eps dnorm(u,v) dnorm(uu-vv) 1e-4
+        @test_approx_eq_eps dnorm(u,v) dnormcptp(uu,vv) 1e-4
     end
 end
 
