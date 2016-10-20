@@ -15,7 +15,7 @@
 VERSION >= v"0.4.0-dev+6521" && __precompile__()
 module SchattenNorms
 
-export snorm, nucnorm, trnorm, specnorm, fnorm, dnorm, dnormcptp, worstfidelity
+export snorm, nucnorm, trnorm, specnorm, fnorm, dnorm, ddist, ddistu, worstfidelity
 
 """
 nucnorm(m)

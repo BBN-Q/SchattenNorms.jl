@@ -23,62 +23,59 @@ uu = liou(u)
 v = rand_unitary(2)
 vv = liou(v)
 
-#ee = rand_cp_map(2)
-#ff = rand_cp_map(2)
-
 println("Testing maximal dnorm examples ...")
 
 @test_approx_eq_eps 2.0 dnorm(cnotL-eye(16)) 1e-5
-@test_approx_eq_eps 2.0 dnorm(cnot,eye(4)) 1e-5
-@test_approx_eq_eps 2.0 dnormcptp(cnotL,eye(16)) 1e-5
+@test_approx_eq_eps 2.0 ddist(cnotL,eye(16)) 1e-5
+@test_approx_eq_eps 2.0 ddistu(cnot,eye(4)) 1e-5
 
 @test_approx_eq_eps 2.0 dnorm(eye(4)-liou(x)) 1e-5
-@test_approx_eq_eps 2.0 dnormcptp(eye(4),liou(x)) 1e-5
-@test_approx_eq_eps 2.0 dnorm(eye(2),x) 1e-5
+@test_approx_eq_eps 2.0 ddist(eye(4),liou(x)) 1e-5
+@test_approx_eq_eps 2.0 ddistu(eye(2),x) 1e-5
 
 @test_approx_eq_eps 2.0 dnorm(eye(4)-liou(z)) 1e-5
-@test_approx_eq_eps 2.0 dnormcptp(eye(4),liou(z)) 1e-5
-@test_approx_eq_eps 2.0 dnorm(eye(2),z) 1e-5
+@test_approx_eq_eps 2.0 ddist(eye(4),liou(z)) 1e-5
+@test_approx_eq_eps 2.0 ddistu(eye(2),z) 1e-5
 
 @test_approx_eq_eps 2.0 dnorm(eye(4)-liou(y)) 1e-5
-@test_approx_eq_eps 2.0 dnormcptp(eye(4),liou(y)) 1e-5
-@test_approx_eq_eps 2.0 dnorm(eye(2),y) 1e-5
+@test_approx_eq_eps 2.0 ddist(eye(4),liou(y)) 1e-5
+@test_approx_eq_eps 2.0 ddistu(eye(2),y) 1e-5
 
 @test_approx_eq_eps 2.0 dnorm(liou(x)-liou(y)) 1e-5
-@test_approx_eq_eps 2.0 dnormcptp(liou(x),liou(y)) 1e-5
-@test_approx_eq_eps 2.0 dnorm(x,y) 1e-5
+@test_approx_eq_eps 2.0 ddist(liou(x),liou(y)) 1e-5
+@test_approx_eq_eps 2.0 ddistu(x,y) 1e-5
 
 @test_approx_eq_eps 2.0 dnorm(liou(x)-liou(z)) 1e-5
-@test_approx_eq_eps 2.0 dnormcptp(liou(x),liou(z)) 1e-5
-@test_approx_eq_eps 2.0 dnorm(x,z) 1e-5
+@test_approx_eq_eps 2.0 ddist(liou(x),liou(z)) 1e-5
+@test_approx_eq_eps 2.0 ddistu(x,z) 1e-5
 
 @test_approx_eq_eps 2.0 dnorm(liou(z)-liou(y)) 1e-5
-@test_approx_eq_eps 2.0 dnormcptp(liou(z),liou(y)) 1e-5
-@test_approx_eq_eps 2.0 dnorm(z,y) 1e-5
+@test_approx_eq_eps 2.0 ddist(liou(z),liou(y)) 1e-5
+@test_approx_eq_eps 2.0 ddistu(z,y) 1e-5
 
 @test_approx_eq_eps 2.0 dnorm(uu*eye(4)-uu*liou(x)) 1e-5
-@test_approx_eq_eps 2.0 dnormcptp(uu*eye(4),uu*liou(x)) 1e-5
-@test_approx_eq_eps 2.0 dnorm(u*eye(2),u*x) 1e-5
+@test_approx_eq_eps 2.0 ddist(uu*eye(4),uu*liou(x)) 1e-5
+@test_approx_eq_eps 2.0 ddistu(u*eye(2),u*x) 1e-5
 
 @test_approx_eq_eps 2.0 dnorm(uu*eye(4)-uu*liou(z)) 1e-5
-@test_approx_eq_eps 2.0 dnormcptp(uu*eye(4),uu*liou(z)) 1e-5
-@test_approx_eq_eps 2.0 dnorm(u*eye(2),u*z) 1e-5
+@test_approx_eq_eps 2.0 ddist(uu*eye(4),uu*liou(z)) 1e-5
+@test_approx_eq_eps 2.0 ddistu(u*eye(2),u*z) 1e-5
 
 @test_approx_eq_eps 2.0 dnorm(uu*eye(4)-uu*liou(y)) 1e-5
-@test_approx_eq_eps 2.0 dnormcptp(uu*eye(4),uu*liou(y)) 1e-5
-@test_approx_eq_eps 2.0 dnorm(u*eye(2),u*y) 1e-5
+@test_approx_eq_eps 2.0 ddist(uu*eye(4),uu*liou(y)) 1e-5
+@test_approx_eq_eps 2.0 ddistu(u*eye(2),u*y) 1e-5
 
 @test_approx_eq_eps 2.0 dnorm(uu*liou(x)-uu*liou(y)) 1e-5
-@test_approx_eq_eps 2.0 dnormcptp(uu*liou(x),uu*liou(y)) 1e-5
-@test_approx_eq_eps 2.0 dnorm(u*x,u*y) 1e-5
+@test_approx_eq_eps 2.0 ddist(uu*liou(x),uu*liou(y)) 1e-5
+@test_approx_eq_eps 2.0 ddistu(u*x,u*y) 1e-5
 
 @test_approx_eq_eps 2.0 dnorm(uu*liou(x)-uu*liou(z)) 1e-5
-@test_approx_eq_eps 2.0 dnormcptp(uu*liou(x),uu*liou(z)) 1e-5
-@test_approx_eq_eps 2.0 dnorm(u*x,u*z) 1e-5
+@test_approx_eq_eps 2.0 ddist(uu*liou(x),uu*liou(z)) 1e-5
+@test_approx_eq_eps 2.0 ddistu(u*x,u*z) 1e-5
 
 @test_approx_eq_eps 2.0 dnorm(uu*liou(z)-uu*liou(y)) 1e-5
-@test_approx_eq_eps 2.0 dnormcptp(uu*liou(z),uu*liou(y)) 1e-5
-@test_approx_eq_eps 2.0 dnorm(u*z,u*y) 1e-5
+@test_approx_eq_eps 2.0 ddist(uu*liou(z),uu*liou(y)) 1e-5
+@test_approx_eq_eps 2.0 ddistu(u*z,u*y) 1e-5
 
 println("Testing dnorm for Pauli channels ...")
 
@@ -90,8 +87,8 @@ for i in 1:10
         
     pc1 = sum([ p1[ii+1]*liou(pauli[ii+1]) for ii in 0:3])
     pc2 = sum([ p2[ii+1]*liou(pauli[ii+1]) for ii in 0:3])
-    #calc_dnorm1 = dnorm(pc1-pc2)
-    calc_dnorm1 = dnormcptp(pc1,pc2)
+
+    calc_dnorm1 = ddist(pc1,pc2)
     
     @test_approx_eq_eps pauli_dnorm calc_dnorm1  1e-5
 end
@@ -111,7 +108,7 @@ end
 @test_approx_eq_eps duv duv4 1e-5
 @test_approx_eq_eps duv duv5 1e-5
 
-println("Testing dnorm for difference of unitary transformations ...")
+println("Testing ddist for difference of unitary transformations ...")
 
 for i in 1:20
     for d in [2,3,4]
@@ -120,7 +117,7 @@ for i in 1:20
         v = rand_unitary(d)
         vv = liou(v)
         
-        @test_approx_eq_eps dnorm(u,v) dnormcptp(uu,vv) 1e-4
+        @test_approx_eq_eps ddistu(u,v) ddist(uu,vv) 1e-4
     end
 end
 
@@ -131,11 +128,11 @@ for i in 1:20
         v = rand_unitary(d)
         vv = liou(v)
         
-        duv  = dnorm(u,v)
-        duv2 = dnorm(u*v',eye(d))
-        duv3 = dnorm(v'u,eye(d))
-        duv4 = dnorm(eye(d),u'*v)
-        duv5 = dnorm(eye(d),v*u')    
+        duv  = ddistu(u,v)
+        duv2 = ddistu(u*v',eye(d))
+        duv3 = ddistu(v'u,eye(d))
+        duv4 = ddistu(eye(d),u'*v)
+        duv5 = ddistu(eye(d),v*u')    
         
         @test_approx_eq_eps duv duv2 1e-10
         @test_approx_eq_eps duv duv3 1e-10

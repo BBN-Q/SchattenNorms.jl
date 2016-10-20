@@ -62,11 +62,38 @@ function worstfidelity(u::Matrix, v::Matrix)
 end
 
 """
-dnorm(U,V)
+ddist(U,V)
 
-Diamond norm distance between two unitary matrices `U` and `V`.
-This is equivalent to dnorm(liou(U)-liou(V)).
+Diamond norm distance between two linear CPTP superoperators.
+  Equivalent to dnrom(E-F), but under the assumption that `E` and `F`
+  are CPTP supeoperators, but the `ddist` call is
+  much more accurate and faster due to properties of CPTP
+  superoperators.
+
+See `ddistu` for a similar implementation of `dnorm` customized
+to the difference between unitary operations.
+
 """
-function dnorm(U::Matrix,V::Matrix)
-    return 2*sqrt(1-worstfidelity(U,V))
+ddist(E::Matrix,F::Matrix) = dnormcptp(E,F)
+
+"""
+ddist(U,V)
+
+Diamond norm distance between two unitary operations.
+  Equivalent to `dnorm(liou(U)-liou(V))`, under the assumption `U` and
+  `V` are unitary matrices. However the `ddist` call is much more
+  accurate and much faster due to properties of unitary matrices and
+  the corresponding superoperators. 
+
+  **Note:** for this particular case, the matrices in question are not
+    the superoperators corresponding to the unitary operation, but
+    rather the unitary operations themselves.
+
+See `ddist` for a similar implementation of `dnorm` customized
+to the difference between CPTP maps.
+
+"""
+function ddistu(U::Matrix,V::Matrix)
+    w = worstfidelity(U,V)
+    return 2*sqrt(1-w)
 end

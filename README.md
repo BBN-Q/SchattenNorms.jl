@@ -32,14 +32,21 @@ Alias function | Equivalent call | Common name
 `specnorm(M)` | `snorm(M,Inf)` | spectral norm. 
 `cbnorm(M)` | `cbnorm(M,Inf)` | completely bounded norm usually refers to p=∞, so this is the default
 `dnorm(M)` | `cbnorm(M,1)` | diamond norm
-`dnorm(U,V)` | `cbnorm(liou(U)-liou(V),1)` | diamond norm distance between two unitaries
-`dnormcptp(K,L)` | `cbnorm(K-L,1)` | diamond norm distance between two CPTP maps (in Liouville representation)
+
+For the special case where `M` is the difference between CPTP maps, or
+the difference between superoperators corresponding to unitary maps,
+use `ddist` described below.
 
 ## Utility functions
 
 Function name | Common name | Mathematical meaning
 --------------|-------------|--------
-worstfidelity(u, v) | Worst case output state (Jozsa) fidelity | min {❘⟨ψ ❘ v⁺ u ❘ψ⟩❘² : ❘⟨ψ❘ψ⟩❘² = 1}
+`worstfidelity(u, v)` | Worst case output state (Jozsa) fidelity | min {❘⟨ψ ❘ v⁺ u ❘ψ⟩❘² : ❘⟨ψ❘ψ⟩❘² = 1}
+`ddist(U,V,class=:unitary)` | Diamond norm distance between unitary maps | `dnorm(liou(U)-liou(V))`
+`ddist(E,F,class=:cptp)` | Diamond norm distance between CPTP maps| `dnorm(E-F)`
+
+Despite the mathematical equivalence between `ddist` and `dnorm`,
+`ddist` is much faster and more accurate.
 
 ## Usage
 
