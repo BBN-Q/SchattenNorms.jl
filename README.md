@@ -42,11 +42,11 @@ use `ddist` described below.
 Function name | Common name | Mathematical meaning
 --------------|-------------|--------
 `worstfidelity(u, v)` | Worst case output state (Jozsa) fidelity | min {❘⟨ψ ❘ v⁺ u ❘ψ⟩❘² : ❘⟨ψ❘ψ⟩❘² = 1}
-`ddist(U,V,class=:unitary)` | Diamond norm distance between unitary maps | `dnorm(liou(U)-liou(V))`
-`ddist(E,F,class=:cptp)` | Diamond norm distance between CPTP maps| `dnorm(E-F)`
+`ddistu(U,V)` | Diamond norm distance between unitary maps | `dnorm(liou(U)-liou(V))`
+`ddist(E,F)` | Diamond norm distance between CPTP maps| `dnorm(E-F)`
 
-Despite the mathematical equivalence between `ddist` and `dnorm`,
-`ddist` is much faster and more accurate.
+Despite the mathematical equivalences between `ddist`/`ddistu` and `dnorm`,
+`ddist`/`ddistu` are much faster and more accurate.
 
 ## Usage
 
