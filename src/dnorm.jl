@@ -74,7 +74,11 @@ end
 """
 E_(id_dim, ρ_rim)
 
-Generates linear map E_ such that E_(ρ) → 1 ⊗ ρ
+Generates linear map E such that E(ρ) → 1 ⊗ ρ
+
+Note that the dual of this map is F such that F*vec(σ ⊗ ρ) → trace(σ) vec(ρ), 
+in other words, E is the dual of the partial trace.
+
 """
 function E_(id_dim, ρ_dim)
     M = spzeros(Float64,id_dim^2*ρ_dim^2,ρ_dim^2)
@@ -88,8 +92,9 @@ function E_(id_dim, ρ_dim)
     return M
 end
 
-
 """
+involution(m)
+
 Permutes the elements of a matrix so that it transforms the column
 major representation of a linear map L into a matrix C that is
 positive iff L is completely positive, Hermitian iff L maps
@@ -103,7 +108,7 @@ function involution(m)
 end
 
 let # wat09b
-    global dnormcptp
+    global dnormcptp2
     local prev_dy, F
 
     prev_dy = -1
@@ -118,7 +123,7 @@ let # wat09b
     operator, it should result in the vectorized (column major)
     representation of the result of the transformation.
     """
-    function dnormcptp(L1,L2)
+    function dnormcptp2(L1,L2)
         J = involution(L1-L2)
 
         dx = size(J,1) |> sqrt |> x -> round(Int,x)
@@ -152,6 +157,119 @@ let # wat09b
         prob.constraints += isposdef( ϕ(ρr,ρi) )
         prob.constraints += isposdef( ϕ(Wr,Wi) )
         prob.constraints += isposdef( ϕ(Mr,Mi) - ϕ(Wr,Wi) )
+            
+        solve!(prob)
+
+        if prob.status != :Optimal
+            #println("DNORM_CPTP warning.")
+            #println("Input: $(L)")
+            #println("Input's Choi spectrum: $(eigvals(liou2choi(L)))")
+            warn("Diamond norm calculation did not converge.")
+        end
+
+        return 2*prob.optval
+    end
+end
+
+let # wat09b
+    global dnormcptp
+    local prev_dy, F
+
+    prev_dy = -1
+
+    """
+    dnormcptp(L1,L2) 
+
+    Computes the diamond norm distance between two linear completely
+    positive and trace preserving superoperators `L1` and `L2` . The
+    superoperators must be represented in column major form.
+
+    """
+    function dnormcptp(L1,L2)
+        J = involution(L1-L2)
+
+        dx = size(J,1) |> sqrt |> x -> round(Int,x)
+        dy = dx
+
+        if prev_dy != dy
+            F = E_(dy,dx)'
+            prev_dy = dy
+        end
+
+        Jr = real(J)
+        Ji = imag(J)
+
+        Zr = Variable(dy*dx, dy*dx)
+        Zi = Variable(dy*dx, dy*dx)
+
+        pZr = reshape(F*vec(Zr), dx, dx)
+        pZi = reshape(F*vec(Zi), dx, dx)
+
+        prob = minimize( operatornorm( ϕ(pZr, pZi) ) )
+
+        prob.constraints += isposdef( ϕ(Zr,Zi) )
+        prob.constraints += isposdef( ϕ(Zr,Zi) - ϕ(Jr,Ji) )
+            
+        solve!(prob)
+
+        if prob.status != :Optimal
+            #println("DNORM_CPTP warning.")
+            #println("Input: $(L)")
+            #println("Input's Choi spectrum: $(eigvals(liou2choi(L)))")
+            warn("Diamond norm calculation did not converge.")
+        end
+
+        return 2*prob.optval
+    end
+end
+
+let # wat13b
+    global dnorm2
+    local prev_dy, F
+
+    prev_dy = -1
+
+    """
+    dnorm(L1,L2) 
+
+    Computes the diamond norm of a linear superoperator `L` (i.e., a
+    linear transformation of operators). The superoperator must be
+    represented in column major form. In other words, it must be given
+    by a matrix that, when multiplying a vectorized (column major)
+    operator, it should result in the vectorized (column major)
+    representation of the result of the transformation.
+    """
+    function dnorm2(L1,L2)
+        J = involution(L1-L2)
+
+        dx = size(J,1) |> sqrt |> x -> round(Int,x)
+        dy = dx
+
+        if prev_dy != dy
+            F = E_(dy,dx)'
+            prev_dy = dy
+        end
+
+        Jr = real(J)
+        Ji = imag(J)
+
+        Y0r = Variable(dy*dx, dy*dx)
+        Y0i = Variable(dy*dx, dy*dx)
+
+        Y1r = Variable(dy*dx, dy*dx)
+        Y1i = Variable(dy*dx, dy*dx)
+
+        prob = minimize( operatornorm(ϕ( ρ0r, ρ0i )) + operatornorm(ϕ( ρ1r, ρ1i )))
+        
+        ρ0r = reshape(F*vec(Y0r), dx, dx)
+        ρ0i = reshape(F*vec(Y0i), dx, dx)
+
+        ρ1r = reshape(F*vec(Y1r), dx, dx)
+        ρ1i = reshape(F*vec(Y1i), dx, dx)
+
+        prob.constraints += isposdef( ϕ(Y0r,Y0i) )
+        prob.constraints += isposdef( ϕ(Y1r,Y1i) )
+        prob.constraints += isposdef( ϕ( [ Y0r -Jr ; -Jr' Y1r ], [ Y0i -Xi ; Xi' Y1i ] ) )
             
         solve!(prob)
 
