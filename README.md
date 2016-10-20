@@ -19,25 +19,21 @@ Taking σᵢ(M) to be the *i*th singular value of a matrix *M*, we have
 
 Function name | Mathematical meaning
 --------------|---------------------
-snorm(M, p)   | ∑ᵢ (σᵢ(M))ᵖ
-cbnorm(M, r)  | supᵢ {‖M⊗1ᵢ(X)‖ᵣ  :  ‖X‖ᵣ=1}
+`snorm(M, r)`   | ‖X‖ᵣ = ∑ᵢ (σᵢ(M))ʳ
+`cbnorm(M, r)`  | supᵢ {‖M⊗1ᵢ(X)‖ᵣ  :  ‖X‖ᵣ=1}
 
-Some useful aliases are
+Some useful aliases and relatd calls are
 
 Alias function | Equivalent call | Common name
 ---------------|-----------------|------------
-trnorm(M) | snorm(M,1) | trace norm
-nucnorm(M) | snorm(M,1) | nuclear norm
-fnorm(M) | snorm(M,2), snorm(M) | Frobenius norm (default for `snorm`)
-specnorm(M) | snorm(M,Inf) | spectral norm. 
-cbnorm(M) | cbnorm(M,Inf) | completely bounded norm usually refers to p=∞, so this is the default
-dnorm(M) | cbnorm(M,1) | diamond norm
-dnorm(U,V) | cbnorm(liou(U)-liou(V),1) | diamond norm distance between two unitaries
-
-Note that the spectral norm is also the matrix norm induced by the vector 2 
-norm (the Euclidean norm), and for this reason may be referred as the induced 
-matrix 2 norm. So when someone refers to the 2 norm of a matrix, it may be unclear 
-whether are refering to the Schatten 2-norm or the Schatten ∞-norm.
+`trnorm(M)` | `snorm(M,1)` | trace norm
+`nucnorm(M)` | `snorm(M,1)` | nuclear norm
+`fnorm(M)` | `snorm(M,2), snorm(M)` | Frobenius norm (default for `snorm`)
+`specnorm(M)` | `snorm(M,Inf)` | spectral norm. 
+`cbnorm(M)` | `cbnorm(M,Inf)` | completely bounded norm usually refers to p=∞, so this is the default
+`dnorm(M)` | `cbnorm(M,1)` | diamond norm
+`dnorm(U,V)` | `cbnorm(liou(U)-liou(V),1)` | diamond norm distance between two unitaries
+`dnormcptp(K,L)` | `cbnorm(K-L,1)` | diamond norm distance between two CPTP maps (in Liouville representation)
 
 ## Utility functions
 
@@ -88,7 +84,7 @@ SCS.jl and Convex.jl, for the completely bounded norms.
   somewhat tailored to transformations between isomorphic spaces. It
   should be easy to make it more general.
 
-* [ ] The distance between two quantum channels (i.e., trace preserving,
+* [X] The distance between two quantum channels (i.e., trace preserving,
   completely positive linear maps of operators) is "easier" to compute
   than the completely bounded 1 norm (the diamond norm). Adding a
   function just for that would be nice.
@@ -99,7 +95,7 @@ SCS.jl and Convex.jl, for the completely bounded norms.
 
 Apache Lincense 2.0 ([summary](https://tldrlegal.com/license/apache-license-2.0-(apache-2.0)))
 
-## Copywright
+## Copyright
 
 Raytheon BBN Technologies 2015
 
