@@ -12,7 +12,7 @@
 #     See the License for the specific language governing permissions and
 #     limitations under the License.
 
-using Convex
+import Convex
 import SparseArrays
 import LinearAlgebra
 
@@ -109,22 +109,24 @@ function involution(m)
     return reshape(permutedims(reshape(m,(d,d,d,d)),[2,4,1,3]),(dsq,dsq))
 end
 
+"""
+dnormcptp(L1,L2)
+
+Computes the diamond norm of a linear superoperator `L` (i.e., a
+linear transformation of operators). The superoperator must be
+represented in column major form. In other words, it must be given
+by a matrix that, when multiplying a vectorized (column major)
+operator, it should result in the vectorized (column major)
+representation of the result of the transformation.
+"""
+function dnormcptp2 end
+
 let # wat09b
     global dnormcptp2
     local prev_dy, F
 
     prev_dy = -1
 
-    """
-    dnormcptp(L1,L2)
-
-    Computes the diamond norm of a linear superoperator `L` (i.e., a
-    linear transformation of operators). The superoperator must be
-    represented in column major form. In other words, it must be given
-    by a matrix that, when multiplying a vectorized (column major)
-    operator, it should result in the vectorized (column major)
-    representation of the result of the transformation.
-    """
     function dnormcptp2(L1,L2)
         J = involution(L1-L2)
 
@@ -139,16 +141,16 @@ let # wat09b
         Jr = real(J)
         Ji = imag(J)
 
-        Wr = Variable(dy*dx, dy*dx)
-        Wi = Variable(dy*dx, dy*dx)
+        Wr = Convex.Variable(dy*dx, dy*dx)
+        Wi = Convex.Variable(dy*dx, dy*dx)
 
-        Mr = Variable(dy*dx, dy*dx)
-        Mi = Variable(dy*dx, dy*dx)
+        Mr = Convex.Variable(dy*dx, dy*dx)
+        Mi = Convex.Variable(dy*dx, dy*dx)
 
-        ρr = Variable(dx, dx)
-        ρi = Variable(dx, dx)
+        ρr = Convex.Variable(dx, dx)
+        ρi = Convex.Variable(dx, dx)
 
-        prob = maximize( LinearAlgebra.tr( Jr*Wr + Ji*Wi ) )
+        prob = Convex.maximize( LinearAlgebra.tr( Jr*Wr + Ji*Wi ) )
 
         prob.constraints += LinearAlgebra.tr(ρr) == 1
         prob.constraints += LinearAlgebra.tr(ρi) == 0
@@ -160,7 +162,7 @@ let # wat09b
         prob.constraints += LinearAlgebra.isposdef( ϕ(Wr,Wi) )
         prob.constraints += LinearAlgebra.isposdef( ϕ(Mr,Mi) - ϕ(Wr,Wi) )
 
-        solve!(prob)
+        Convex.solve!(prob)
 
         if prob.status != :Optimal
             #println("DNORM_CPTP warning.")
@@ -201,18 +203,18 @@ let # wat09b
         Jr = real(J)
         Ji = imag(J)
 
-        Zr = Variable(dy*dx, dy*dx)
-        Zi = Variable(dy*dx, dy*dx)
+        Zr = Convex.Variable(dy*dx, dy*dx)
+        Zi = Convex.Variable(dy*dx, dy*dx)
 
         pZr = reshape(F*vec(Zr), dx, dx)
         pZi = reshape(F*vec(Zi), dx, dx)
 
-        prob = minimize( LinearAlgebra.opnorm( ϕ(pZr, pZi) ) )
+        prob = Convex.minimize( LinearAlgebra.opnorm( ϕ(pZr, pZi) ) )
 
         prob.constraints += LinearAlgebra.isposdef( ϕ(Zr,Zi) )
         prob.constraints += LinearAlgebra.isposdef( ϕ(Zr,Zi) - ϕ(Jr,Ji) )
 
-        solve!(prob)
+        Convex.solve!(prob)
 
         if prob.status != :Optimal
             #println("DNORM_CPTP warning.")
@@ -255,13 +257,13 @@ let # wat13b
         Jr = real(J)
         Ji = imag(J)
 
-        Y0r = Variable(dy*dx, dy*dx)
-        Y0i = Variable(dy*dx, dy*dx)
+        Y0r = Convex.Variable(dy*dx, dy*dx)
+        Y0i = Convex.Variable(dy*dx, dy*dx)
 
-        Y1r = Variable(dy*dx, dy*dx)
-        Y1i = Variable(dy*dx, dy*dx)
+        Y1r = Convex.Variable(dy*dx, dy*dx)
+        Y1i = Convex.Variable(dy*dx, dy*dx)
 
-        prob = minimize( LinearAlgebra.opnorm(ϕ( ρ0r, ρ0i )) + LinearAlgebra.opnorm(ϕ( ρ1r, ρ1i )))
+        prob = Convex.minimize( LinearAlgebra.opnorm(ϕ( ρ0r, ρ0i )) + LinearAlgebra.opnorm(ϕ( ρ1r, ρ1i )))
 
         ρ0r = reshape(F*vec(Y0r), dx, dx)
         ρ0i = reshape(F*vec(Y0i), dx, dx)
@@ -273,7 +275,7 @@ let # wat13b
         prob.constraints += LinearAlgebra.isposdef( ϕ(Y1r,Y1i) )
         prob.constraints += LinearAlgebra.isposdef( ϕ( [ Y0r -Jr ; -Jr' Y1r ], [ Y0i -Xi ; Xi' Y1i ] ) )
 
-        solve!(prob)
+        Convex.solve!(prob)
 
         if prob.status != :Optimal
             #println("DNORM_CPTP warning.")
@@ -318,14 +320,14 @@ let # wat13b
         Jr = real(J)
         Ji = imag(J)
 
-        Xr  = Variable(dy*dx, dy*dx)
-        Xi  = Variable(dy*dx, dy*dx)
-        ρ0r = Variable(dx, dx)
-        ρ0i = Variable(dx, dx)
-        ρ1r = Variable(dx, dx)
-        ρ1i = Variable(dx, dx)
+        Xr  = Convex.Variable(dy*dx, dy*dx)
+        Xi  = Convex.Variable(dy*dx, dy*dx)
+        ρ0r = Convex.Variable(dx, dx)
+        ρ0i = Convex.Variable(dx, dx)
+        ρ1r = Convex.Variable(dx, dx)
+        ρ1i = Convex.Variable(dx, dx)
 
-        prob = maximize( LinearAlgebra.tr( Jr*Xr + Ji*Xi ) )
+        prob = Convex.maximize( LinearAlgebra.tr( Jr*Xr + Ji*Xi ) )
 
         prob.constraints += LinearAlgebra.tr(ρ0r) == 1
         prob.constraints += LinearAlgebra.tr(ρ0i) == 0
@@ -343,7 +345,7 @@ let # wat13b
 
         prob.constraints += LinearAlgebra.isposdef( ϕ( [ Mρ0r Xr ; Xr' Mρ1r ], [ Mρ0i Xi ; -Xi' Mρ1i ] ) )
 
-        solve!(prob)
+        Convex.solve!(prob)
 
         if prob.status != :Optimal
             #println("DNORM warning.")
