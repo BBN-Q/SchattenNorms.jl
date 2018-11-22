@@ -167,7 +167,7 @@ let # wat09b
             #println("DNORM_CPTP warning.")
             #println("Input: $(L)")
             #println("Input's Choi spectrum: $(eigvals(liou2choi(L)))")
-            warn("Diamond norm calculation did not converge.")
+            @warn("Diamond norm calculation did not converge.")
         end
 
         return 2*prob.optval
@@ -220,7 +220,7 @@ let # wat09b
             #println("DNORM_CPTP warning.")
             #println("Input: $(L)")
             #println("Input's Choi spectrum: $(eigvals(liou2choi(L)))")
-            warn("Diamond norm calculation did not converge.")
+            @warn("Diamond norm calculation did not converge.")
         end
 
         return 2*prob.optval
@@ -283,7 +283,7 @@ let # wat13b
             #println("DNORM_CPTP warning.")
             #println("Input: $(L)")
             #println("Input's Choi spectrum: $(eigvals(liou2choi(L)))")
-            warn("Diamond norm calculation did not converge.")
+            @warn("Diamond norm calculation did not converge.")
         end
 
         return 2*prob.optval
@@ -291,7 +291,7 @@ let # wat13b
 end
 
 """
-dnorm(L)
+dnorm(L; solver=Convex.get_default_solver())
 
 Computes the diamond norm of a linear superoperator `L` (i.e., a
 linear transformation of operators). The superoperator must be
@@ -353,7 +353,7 @@ let # wat13b
             #println("DNORM warning.")
             #println("Input: $(L)")
             #println("Input's Choi spectrum: $(eigvals(liou2choi(L)))")
-            warn("Diamond norm calculation did not converge.")
+            @warn("Diamond norm calculation did not converge.")
         end
 
         return prob.optval
