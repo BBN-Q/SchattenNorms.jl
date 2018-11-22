@@ -12,8 +12,6 @@
 #     See the License for the specific language governing permissions and
 #     limitations under the License.
 
-# precompilation disabled because of the Convex.jl dependency
-# VERSION >= v"0.4.0" && __precompile__()
 module SchattenNorms
 import LinearAlgebra
 
