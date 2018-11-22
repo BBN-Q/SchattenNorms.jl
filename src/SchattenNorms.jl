@@ -1,3 +1,5 @@
+__precompile__(false)
+
 #    Copyright 2015 Raytheon BBN Technologies
 #
 #     Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,10 +14,13 @@
 #     See the License for the specific language governing permissions and
 #     limitations under the License.
 
+
 module SchattenNorms
+
 import LinearAlgebra
 
 export snorm, nucnorm, trnorm, specnorm, fnorm, dnorm, ddist, ddistu, worstfidelity
+
 
 """
 nucnorm(m)
