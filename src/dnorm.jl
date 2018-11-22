@@ -286,22 +286,24 @@ let # wat13b
     end
 end
 
+"""
+dnorm(L)
+
+Computes the diamond norm of a linear superoperator `L` (i.e., a
+linear transformation of operators). The superoperator must be
+represented in column major form. In other words, it must be given
+by a matrix that, when multiplying a vectorized (column major)
+operator, it should result in the vectorized (column major)
+representation of the result of the transformation.
+"""
+function dnorm end
+
 let # wat13b
     global dnorm
     local prev_dx, M
 
     prev_dx = -1
 
-    """
-    dnorm(L)
-
-    Computes the diamond norm of a linear superoperator `L` (i.e., a
-    linear transformation of operators). The superoperator must be
-    represented in column major form. In other words, it must be given
-    by a matrix that, when multiplying a vectorized (column major)
-    operator, it should result in the vectorized (column major)
-    representation of the result of the transformation.
-    """
     function dnorm(L)
         J = involution(L)
 
