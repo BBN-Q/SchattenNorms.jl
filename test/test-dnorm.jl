@@ -4,7 +4,7 @@ import Base.kron
 
 eye(n::Integer) = Matrix{Float64}(LinearAlgebra.I, (n, n))
 
-set_default_solver(SCSSolver(verbose=0, eps=1e-6, max_iters=5_000))
+set_default_solver(SCS.SCSSolver(verbose=0, eps=1e-6, max_iters=5_000))
 
 x,y,z = [0 1; 1 0], [0 -1im; 1im 0], [1 0; 0 -1]
 
