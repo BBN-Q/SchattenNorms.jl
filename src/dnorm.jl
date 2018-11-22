@@ -13,6 +13,8 @@
 #     limitations under the License.
 
 using Convex
+import SparseArrays
+import LinearAlgebra
 
 """
  ϕ represents the isomorphism between complex and real matrices.
@@ -58,11 +60,11 @@ end
 Compute the trace of the real representation of a complex matrix.
 """
 function retrϕ(m)
-    trace(ϕr(m))
+    LinearAlgebra.tr(ϕr(m))
 end
 
 function ket(i,d)
-    v = spzeros(Float64,d,1)
+    v = SparseArrays.spzeros(Float64,d,1)
     v[i+1] = 1.0
     return v
 end
@@ -76,12 +78,12 @@ E_(id_dim, ρ_rim)
 
 Generates linear map E such that E(ρ) → 1 ⊗ ρ
 
-Note that the dual of this map is F such that F*vec(σ ⊗ ρ) → trace(σ) vec(ρ), 
+Note that the dual of this map is F such that F*vec(σ ⊗ ρ) → trace(σ) vec(ρ),
 in other words, E is the dual of the partial trace.
 
 """
 function E_(id_dim, ρ_dim)
-    M = spzeros(Float64,id_dim^2*ρ_dim^2,ρ_dim^2)
+    M = SparseArrays.spzeros(Float64,id_dim^2*ρ_dim^2,ρ_dim^2)
     for m in 0:ρ_dim-1
         for n in 0:ρ_dim-1
             for k in 0:id_dim-1
@@ -114,7 +116,7 @@ let # wat09b
     prev_dy = -1
 
     """
-    dnormcptp(L1,L2) 
+    dnormcptp(L1,L2)
 
     Computes the diamond norm of a linear superoperator `L` (i.e., a
     linear transformation of operators). The superoperator must be
@@ -146,18 +148,18 @@ let # wat09b
         ρr = Variable(dx, dx)
         ρi = Variable(dx, dx)
 
-        prob = maximize( trace( Jr*Wr + Ji*Wi ) )
+        prob = maximize( LinearAlgebra.tr( Jr*Wr + Ji*Wi ) )
 
-        prob.constraints += trace(ρr) == 1
-        prob.constraints += trace(ρi) == 0
-        
+        prob.constraints += LinearAlgebra.tr(ρr) == 1
+        prob.constraints += LinearAlgebra.tr(ρi) == 0
+
         Mr = reshape(F*vec(ρr), dy*dx, dy*dx)
         Mi = reshape(F*vec(ρi), dy*dx, dy*dx)
 
-        prob.constraints += isposdef( ϕ(ρr,ρi) )
-        prob.constraints += isposdef( ϕ(Wr,Wi) )
-        prob.constraints += isposdef( ϕ(Mr,Mi) - ϕ(Wr,Wi) )
-            
+        prob.constraints += LinearAlgebra.isposdef( ϕ(ρr,ρi) )
+        prob.constraints += LinearAlgebra.isposdef( ϕ(Wr,Wi) )
+        prob.constraints += LinearAlgebra.isposdef( ϕ(Mr,Mi) - ϕ(Wr,Wi) )
+
         solve!(prob)
 
         if prob.status != :Optimal
@@ -178,7 +180,7 @@ let # wat09b
     prev_dy = -1
 
     """
-    dnormcptp(L1,L2) 
+    dnormcptp(L1,L2)
 
     Computes the diamond norm distance between two linear completely
     positive and trace preserving superoperators `L1` and `L2` . The
@@ -205,11 +207,11 @@ let # wat09b
         pZr = reshape(F*vec(Zr), dx, dx)
         pZi = reshape(F*vec(Zi), dx, dx)
 
-        prob = minimize( operatornorm( ϕ(pZr, pZi) ) )
+        prob = minimize( LinearAlgebra.opnorm( ϕ(pZr, pZi) ) )
 
-        prob.constraints += isposdef( ϕ(Zr,Zi) )
-        prob.constraints += isposdef( ϕ(Zr,Zi) - ϕ(Jr,Ji) )
-            
+        prob.constraints += LinearAlgebra.isposdef( ϕ(Zr,Zi) )
+        prob.constraints += LinearAlgebra.isposdef( ϕ(Zr,Zi) - ϕ(Jr,Ji) )
+
         solve!(prob)
 
         if prob.status != :Optimal
@@ -230,7 +232,7 @@ let # wat13b
     prev_dy = -1
 
     """
-    dnorm(L1,L2) 
+    dnorm(L1,L2)
 
     Computes the diamond norm of a linear superoperator `L` (i.e., a
     linear transformation of operators). The superoperator must be
@@ -259,18 +261,18 @@ let # wat13b
         Y1r = Variable(dy*dx, dy*dx)
         Y1i = Variable(dy*dx, dy*dx)
 
-        prob = minimize( operatornorm(ϕ( ρ0r, ρ0i )) + operatornorm(ϕ( ρ1r, ρ1i )))
-        
+        prob = minimize( LinearAlgebra.opnorm(ϕ( ρ0r, ρ0i )) + LinearAlgebra.opnorm(ϕ( ρ1r, ρ1i )))
+
         ρ0r = reshape(F*vec(Y0r), dx, dx)
         ρ0i = reshape(F*vec(Y0i), dx, dx)
 
         ρ1r = reshape(F*vec(Y1r), dx, dx)
         ρ1i = reshape(F*vec(Y1i), dx, dx)
 
-        prob.constraints += isposdef( ϕ(Y0r,Y0i) )
-        prob.constraints += isposdef( ϕ(Y1r,Y1i) )
-        prob.constraints += isposdef( ϕ( [ Y0r -Jr ; -Jr' Y1r ], [ Y0i -Xi ; Xi' Y1i ] ) )
-            
+        prob.constraints += LinearAlgebra.isposdef( ϕ(Y0r,Y0i) )
+        prob.constraints += LinearAlgebra.isposdef( ϕ(Y1r,Y1i) )
+        prob.constraints += LinearAlgebra.isposdef( ϕ( [ Y0r -Jr ; -Jr' Y1r ], [ Y0i -Xi ; Xi' Y1i ] ) )
+
         solve!(prob)
 
         if prob.status != :Optimal
@@ -291,7 +293,7 @@ let # wat13b
     prev_dx = -1
 
     """
-    dnorm(L) 
+    dnorm(L)
 
     Computes the diamond norm of a linear superoperator `L` (i.e., a
     linear transformation of operators). The superoperator must be
@@ -321,23 +323,23 @@ let # wat13b
         ρ1r = Variable(dx, dx)
         ρ1i = Variable(dx, dx)
 
-        prob = maximize( trace( Jr*Xr + Ji*Xi ) )
+        prob = maximize( LinearAlgebra.tr( Jr*Xr + Ji*Xi ) )
 
-        prob.constraints += trace(ρ0r) == 1
-        prob.constraints += trace(ρ0i) == 0
-        prob.constraints += trace(ρ1r) == 1
-        prob.constraints += trace(ρ1i) == 0
+        prob.constraints += LinearAlgebra.tr(ρ0r) == 1
+        prob.constraints += LinearAlgebra.tr(ρ0i) == 0
+        prob.constraints += LinearAlgebra.tr(ρ1r) == 1
+        prob.constraints += LinearAlgebra.tr(ρ1i) == 0
 
         Mρ0r = reshape(M * vec(ρ0r), dy*dx, dy*dx)
         Mρ0i = reshape(M * vec(ρ0i), dy*dx, dy*dx)
         Mρ1r = reshape(M * vec(ρ1r), dy*dx, dy*dx)
         Mρ1i = reshape(M * vec(ρ1i), dy*dx, dy*dx)
 
-        prob.constraints += isposdef( ϕ(ρ0r,ρ0i) )
+        prob.constraints += LinearAlgebra.isposdef( ϕ(ρ0r,ρ0i) )
 
-        prob.constraints += isposdef( ϕ(ρ1r,ρ1i) )
+        prob.constraints += LinearAlgebra.isposdef( ϕ(ρ1r,ρ1i) )
 
-        prob.constraints += isposdef( ϕ( [ Mρ0r Xr ; Xr' Mρ1r ], [ Mρ0i Xi ; -Xi' Mρ1i ] ) )
+        prob.constraints += LinearAlgebra.isposdef( ϕ( [ Mρ0r Xr ; Xr' Mρ1r ], [ Mρ0i Xi ; -Xi' Mρ1i ] ) )
 
         solve!(prob)
 

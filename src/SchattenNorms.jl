@@ -15,6 +15,7 @@
 # precompilation disabled because of the Convex.jl dependency
 # VERSION >= v"0.4.0" && __precompile__()
 module SchattenNorms
+import LinearAlgebra
 
 export snorm, nucnorm, trnorm, specnorm, fnorm, dnorm, ddist, ddistu, worstfidelity
 
@@ -24,7 +25,7 @@ nucnorm(m)
 Computes the nuclear norm of a matrix `m`.
 """
 function nucnorm(m::AbstractMatrix)
-    norm(svdvals(m),1)
+    LinearAlgebra.norm(LinearAlgebra.svdvals(m),1)
 end
 
 """
@@ -39,7 +40,7 @@ fnorm(m)
 
 Computes the Frobenius norm of a matrix `m`.
 """
-fnorm(m::AbstractMatrix) = vecnorm(m,2)
+fnorm(m::AbstractMatrix) = LinearAlgebra.norm(m,2)
 
 """
 specnorm(m)
@@ -47,7 +48,7 @@ specnorm(m)
 Computes the spectral norm of a matrix `m` (i.e., the maximum singular value).
 """
 function specnorm(m::AbstractMatrix)
-    return norm(svdvals(m),Inf)
+    return LinearAlgebra.norm(LinearAlgebra.svdvals(m),Inf)
 end
 
 """
@@ -56,8 +57,8 @@ snorm(m,p=2)
 Computes the `p`-Schatten norm of a matrix `m`.
 """
 function snorm(m::AbstractMatrix,p=2.0)
-    p == 2.0 && return vecnorm(m,2)
-    return norm(svdvals(m),p)
+    p == 2.0 && return LinearAlgebra.norm(m,2)
+    return LinearAlgebra.norm(LinearAlgebra.svdvals(m),p)
 end
 
 include("dnorm.jl")
