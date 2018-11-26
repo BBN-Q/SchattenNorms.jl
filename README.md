@@ -1,5 +1,7 @@
 # SchattenNorms.jl
 
+[![Build Status](https://travis-ci.org/BBN-Q/SchattenNorms.jl.svg?branch=master)](https://travis-ci.org/BBN-Q/SchattenNorms.jl)
+
 Simple implementation of Schatten norms. This package includes the
 complete bounded versions of the induced norms for linear
 transformations of matrices (i.e., *superoperators*), implemented as
