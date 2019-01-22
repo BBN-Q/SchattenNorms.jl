@@ -30,93 +30,54 @@ println("Testing maximal dnorm examples ...")
 @test isapprox(dnorm(cnotL-eye(16)), 2.0; atol=1e-5)
 @test isapprox(ddist(cnotL,eye(16)), 2.0; atol=1e-5)
 @test isapprox(ddistu(cnot,eye(4)), 2.0; atol=1e-5)
-# @test_approx_eq_eps 2.0 dnorm(cnotL-eye(16)) 1e-5
-# @test_approx_eq_eps 2.0 ddist(cnotL,eye(16)) 1e-5
-# @test_approx_eq_eps 2.0 ddistu(cnot,eye(4)) 1e-5
 
 @test isapprox(dnorm(eye(4)-liou(x)), 2.0; atol=1e-5)
 @test isapprox(ddist(eye(4),liou(x)), 2.0; atol=1e-5)
 @test isapprox(ddistu(eye(2),x), 2.0; atol=1e-5)
-# @test_approx_eq_eps 2.0 dnorm(eye(4)-liou(x)) 1e-5
-# @test_approx_eq_eps 2.0 ddist(eye(4),liou(x)) 1e-5
-# @test_approx_eq_eps 2.0 ddistu(eye(2),x) 1e-5
 
 @test isapprox(dnorm(eye(4)-liou(z)), 2.0; atol=1e-5)
 @test isapprox(ddist(eye(4),liou(z)), 2.0; atol=1e-5)
 @test isapprox(ddistu(eye(2),z), 2.0; atol=1e-5)
-# @test_approx_eq_eps 2.0 dnorm(eye(4)-liou(z)) 1e-5
-# @test_approx_eq_eps 2.0 ddist(eye(4),liou(z)) 1e-5
-# @test_approx_eq_eps 2.0 ddistu(eye(2),z) 1e-5
 
 @test isapprox(dnorm(eye(4)-liou(y)), 2.0; atol=1e-5)
 @test isapprox(ddist(eye(4),liou(y)), 2.0; atol=1e-5)
 @test isapprox(ddistu(eye(2),y), 2.0; atol=1e-5)
-# @test_approx_eq_eps 2.0 dnorm(eye(4)-liou(y)) 1e-5
-# @test_approx_eq_eps 2.0 ddist(eye(4),liou(y)) 1e-5
-# @test_approx_eq_eps 2.0 ddistu(eye(2),y) 1e-5
 
 @test isapprox(dnorm(liou(x)-liou(y)), 2.0; atol=1e-5)
 @test isapprox(ddist(liou(x),liou(y)), 2.0; atol=1e-5)
 @test isapprox(ddistu(x,y), 2.0; atol=1e-5)
-# @test_approx_eq_eps 2.0 dnorm(liou(x)-liou(y)) 1e-5
-# @test_approx_eq_eps 2.0 ddist(liou(x),liou(y)) 1e-5
-# @test_approx_eq_eps 2.0 ddistu(x,y) 1e-5
 
 @test isapprox(dnorm(liou(x)-liou(z)), 2.0; atol=1e-5)
 @test isapprox(ddist(liou(x),liou(z)), 2.0; atol=1e-5)
 @test isapprox(ddistu(x,z), 2.0; atol=1e-5)
-# @test_approx_eq_eps 2.0 dnorm(liou(x)-liou(z)) 1e-5
-# @test_approx_eq_eps 2.0 ddist(liou(x),liou(z)) 1e-5
-# @test_approx_eq_eps 2.0 ddistu(x,z) 1e-5
 
 @test isapprox(dnorm(liou(z)-liou(y)), 2.0; atol=1e-5)
 @test isapprox(ddist(liou(z),liou(y)), 2.0; atol=1e-5)
 @test isapprox(ddistu(z,y), 2.0; atol=1e-5)
-# @test_approx_eq_eps 2.0 dnorm(liou(z)-liou(y)) 1e-5
-# @test_approx_eq_eps 2.0 ddist(liou(z),liou(y)) 1e-5
-# @test_approx_eq_eps 2.0 ddistu(z,y) 1e-5
 
 @test isapprox(dnorm(uu*eye(4)-uu*liou(x)), 2.0; atol=1e-5)
 @test isapprox(ddist(uu*eye(4),uu*liou(x)), 2.0; atol=1e-5)
 @test isapprox(ddistu(u*eye(2),u*x), 2.0; atol=1e-5)
-# @test_approx_eq_eps 2.0 dnorm(uu*eye(4)-uu*liou(x)) 1e-5
-# @test_approx_eq_eps 2.0 ddist(uu*eye(4),uu*liou(x)) 1e-5
-# @test_approx_eq_eps 2.0 ddistu(u*eye(2),u*x) 1e-5
 
 @test isapprox(dnorm(uu*eye(4)-uu*liou(z)), 2.0; atol=1e-5)
 @test isapprox(ddist(uu*eye(4),uu*liou(z)), 2.0; atol=1e-5)
 @test isapprox(ddistu(u*eye(2),u*z), 2.0; atol=1e-5)
-# @test_approx_eq_eps 2.0 dnorm(uu*eye(4)-uu*liou(z)) 1e-5
-# @test_approx_eq_eps 2.0 ddist(uu*eye(4),uu*liou(z)) 1e-5
-# @test_approx_eq_eps 2.0 ddistu(u*eye(2),u*z) 1e-5
 
 @test isapprox(dnorm(uu*eye(4)-uu*liou(y)), 2.0; atol=1e-5)
 @test isapprox(ddist(uu*eye(4),uu*liou(y)), 2.0; atol=1e-5)
 @test isapprox(ddistu(u*eye(2),u*y), 2.0; atol=1e-5)
-# @test_approx_eq_eps 2.0 dnorm(uu*eye(4)-uu*liou(y)) 1e-5
-# @test_approx_eq_eps 2.0 ddist(uu*eye(4),uu*liou(y)) 1e-5
-# @test_approx_eq_eps 2.0 ddistu(u*eye(2),u*y) 1e-5
 
 @test isapprox(dnorm(uu*liou(x)-uu*liou(y)), 2.0; atol=1e-5)
 @test isapprox(ddist(uu*liou(x),uu*liou(y)), 2.0; atol=1e-5)
 @test isapprox(ddistu(u*x,u*y), 2.0; atol=1e-5)
-# @test_approx_eq_eps 2.0 dnorm(uu*liou(x)-uu*liou(y)) 1e-5
-# @test_approx_eq_eps 2.0 ddist(uu*liou(x),uu*liou(y)) 1e-5
-# @test_approx_eq_eps 2.0 ddistu(u*x,u*y) 1e-5
 
 @test isapprox(dnorm(uu*liou(x)-uu*liou(z)), 2.0; atol=1e-5)
 @test isapprox(ddist(uu*liou(x),uu*liou(z)), 2.0; atol=1e-5)
 @test isapprox(ddistu(u*x,u*z), 2.0; atol=1e-5)
-# @test_approx_eq_eps 2.0 dnorm(uu*liou(x)-uu*liou(z)) 1e-5
-# @test_approx_eq_eps 2.0 ddist(uu*liou(x),uu*liou(z)) 1e-5
-# @test_approx_eq_eps 2.0 ddistu(u*x,u*z) 1e-5
 
 @test isapprox(dnorm(uu*liou(z)-uu*liou(y)), 2.0; atol=1e-5)
 @test isapprox(ddist(uu*liou(z),uu*liou(y)), 2.0; atol=1e-5)
 @test isapprox(ddistu(u*z,u*y), 2.0; atol=1e-5)
-# @test_approx_eq_eps 2.0 dnorm(uu*liou(z)-uu*liou(y)) 1e-5
-# @test_approx_eq_eps 2.0 ddist(uu*liou(z),uu*liou(y)) 1e-5
-# @test_approx_eq_eps 2.0 ddistu(u*z,u*y) 1e-5
 
 println("Testing dnorm for Pauli channels ...")
 
@@ -131,7 +92,6 @@ for i in 1:10
 
     calc_dnorm1 = ddist(pc1,pc2)
 
-    #@test_approx_eq_eps pauli_dnorm calc_dnorm1  1e-5
     @test isapprox(pauli_dnorm, calc_dnorm1, atol=1e-5)
 end
 
@@ -149,10 +109,6 @@ end
 @test isapprox(duv, duv3, atol=1e-5)
 @test isapprox(duv, duv4, atol=1e-5)
 @test isapprox(duv, duv5, atol=1e-5)
-# @test_approx_eq_eps duv duv2 1e-5
-# @test_approx_eq_eps duv duv3 1e-5
-# @test_approx_eq_eps duv duv4 1e-5
-# @test_approx_eq_eps duv duv5 1e-5
 
 println("Testing ddist for difference of unitary transformations ...")
 
@@ -164,7 +120,6 @@ for i in 1:20
         vv = liou(v)
 
         @test isapprox(ddistu(u,v), ddist(uu,vv), atol=1e-4)
-        #@test_approx_eq_eps ddistu(u,v) ddist(uu,vv) 1e-4
     end
 end
 
@@ -185,10 +140,6 @@ for i in 1:20
         @test isapprox(duv, duv3, atol=1e-10)
         @test isapprox(duv, duv4, atol=1e-10)
         @test isapprox(duv, duv5, atol=1e-10)
-        # @test_approx_eq_eps duv duv2 1e-10
-        # @test_approx_eq_eps duv duv3 1e-10
-        # @test_approx_eq_eps duv duv4 1e-10
-        # @test_approx_eq_eps duv duv5 1e-10
     end
 end
 
