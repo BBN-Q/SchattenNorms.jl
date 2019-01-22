@@ -1,4 +1,4 @@
-using Base.Test, Convex, Cliffords, SCS, SchattenNorms, Distributions, QuantumInfo
+using Test, Convex, Cliffords, SCS, SchattenNorms, Distributions, QuantumInfo
 
 import Base.kron
 
@@ -17,7 +17,7 @@ end
 function randp(n)
     return rand(Dirichlet(ones(4^n)))
 end
-    
+
 function dnormp(p1,p2)
     return norm(p1-p2,1)
 end
@@ -38,10 +38,10 @@ times = Vector[]
 results = Vector[]
 for i in 1:100
     println("Iteration ",i)
-    
+
     p1 = randp(2)
     p2 = randp(2)
-    
+
     pc1 = paulichannel(p1)
     pc2 = paulichannel(p2)
 
