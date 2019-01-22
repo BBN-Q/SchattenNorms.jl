@@ -13,6 +13,10 @@
 #     limitations under the License.
 
 using Convex
+using SCS
+
+import SparseArrays: spzeros
+import LinearAlgebra: tr, opnorm
 
 """
  ϕ represents the isomorphism between complex and real matrices.
@@ -58,7 +62,7 @@ end
 Compute the trace of the real representation of a complex matrix.
 """
 function retrϕ(m)
-    trace(ϕr(m))
+    tr(ϕr(m))
 end
 
 function ket(i,d)
@@ -76,7 +80,7 @@ E_(id_dim, ρ_rim)
 
 Generates linear map E such that E(ρ) → 1 ⊗ ρ
 
-Note that the dual of this map is F such that F*vec(σ ⊗ ρ) → trace(σ) vec(ρ), 
+Note that the dual of this map is F such that F*vec(σ ⊗ ρ) → trace(σ) vec(ρ),
 in other words, E is the dual of the partial trace.
 
 """
@@ -114,7 +118,7 @@ let # wat09b
     prev_dy = -1
 
     """
-    dnormcptp(L1,L2) 
+    dnormcptp(L1,L2)
 
     Computes the diamond norm of a linear superoperator `L` (i.e., a
     linear transformation of operators). The superoperator must be
@@ -146,19 +150,19 @@ let # wat09b
         ρr = Variable(dx, dx)
         ρi = Variable(dx, dx)
 
-        prob = maximize( trace( Jr*Wr + Ji*Wi ) )
+        prob = maximize( tr( Jr*Wr + Ji*Wi ) )
 
-        prob.constraints += trace(ρr) == 1
-        prob.constraints += trace(ρi) == 0
-        
+        prob.constraints += tr(ρr) == 1
+        prob.constraints += tr(ρi) == 0
+
         Mr = reshape(F*vec(ρr), dy*dx, dy*dx)
         Mi = reshape(F*vec(ρi), dy*dx, dy*dx)
 
         prob.constraints += isposdef( ϕ(ρr,ρi) )
         prob.constraints += isposdef( ϕ(Wr,Wi) )
         prob.constraints += isposdef( ϕ(Mr,Mi) - ϕ(Wr,Wi) )
-            
-        solve!(prob)
+
+        solve!(prob, SCSSolver(verbose=0, eps=1e-6, max_iters=5_000))
 
         if prob.status != :Optimal
             #println("DNORM_CPTP warning.")
@@ -178,7 +182,7 @@ let # wat09b
     prev_dy = -1
 
     """
-    dnormcptp(L1,L2) 
+    dnormcptp(L1,L2)
 
     Computes the diamond norm distance between two linear completely
     positive and trace preserving superoperators `L1` and `L2` . The
@@ -205,12 +209,12 @@ let # wat09b
         pZr = reshape(F*vec(Zr), dx, dx)
         pZi = reshape(F*vec(Zi), dx, dx)
 
-        prob = minimize( operatornorm( ϕ(pZr, pZi) ) )
+        prob = minimize( opnorm( ϕ(pZr, pZi) ) )
 
         prob.constraints += isposdef( ϕ(Zr,Zi) )
         prob.constraints += isposdef( ϕ(Zr,Zi) - ϕ(Jr,Ji) )
-            
-        solve!(prob)
+
+        solve!(prob, SCSSolver(verbose=0, eps=1e-6, max_iters=5_000))
 
         if prob.status != :Optimal
             #println("DNORM_CPTP warning.")
@@ -230,7 +234,7 @@ let # wat13b
     prev_dy = -1
 
     """
-    dnorm(L1,L2) 
+    dnorm(L1,L2)
 
     Computes the diamond norm of a linear superoperator `L` (i.e., a
     linear transformation of operators). The superoperator must be
@@ -259,8 +263,8 @@ let # wat13b
         Y1r = Variable(dy*dx, dy*dx)
         Y1i = Variable(dy*dx, dy*dx)
 
-        prob = minimize( operatornorm(ϕ( ρ0r, ρ0i )) + operatornorm(ϕ( ρ1r, ρ1i )))
-        
+        prob = minimize( opnorm(ϕ( ρ0r, ρ0i )) + opnorm(ϕ( ρ1r, ρ1i )))
+
         ρ0r = reshape(F*vec(Y0r), dx, dx)
         ρ0i = reshape(F*vec(Y0i), dx, dx)
 
@@ -270,8 +274,8 @@ let # wat13b
         prob.constraints += isposdef( ϕ(Y0r,Y0i) )
         prob.constraints += isposdef( ϕ(Y1r,Y1i) )
         prob.constraints += isposdef( ϕ( [ Y0r -Jr ; -Jr' Y1r ], [ Y0i -Xi ; Xi' Y1i ] ) )
-            
-        solve!(prob)
+
+        solve!(prob, SCSSolver(verbose=0, eps=1e-6, max_iters=5_000))
 
         if prob.status != :Optimal
             #println("DNORM_CPTP warning.")
@@ -291,7 +295,7 @@ let # wat13b
     prev_dx = -1
 
     """
-    dnorm(L) 
+    dnorm(L)
 
     Computes the diamond norm of a linear superoperator `L` (i.e., a
     linear transformation of operators). The superoperator must be
@@ -321,12 +325,12 @@ let # wat13b
         ρ1r = Variable(dx, dx)
         ρ1i = Variable(dx, dx)
 
-        prob = maximize( trace( Jr*Xr + Ji*Xi ) )
+        prob = maximize( tr( Jr*Xr + Ji*Xi ) )
 
-        prob.constraints += trace(ρ0r) == 1
-        prob.constraints += trace(ρ0i) == 0
-        prob.constraints += trace(ρ1r) == 1
-        prob.constraints += trace(ρ1i) == 0
+        prob.constraints += tr(ρ0r) == 1
+        prob.constraints += tr(ρ0i) == 0
+        prob.constraints += tr(ρ1r) == 1
+        prob.constraints += tr(ρ1i) == 0
 
         Mρ0r = reshape(M * vec(ρ0r), dy*dx, dy*dx)
         Mρ0i = reshape(M * vec(ρ0i), dy*dx, dy*dx)
@@ -339,7 +343,7 @@ let # wat13b
 
         prob.constraints += isposdef( ϕ( [ Mρ0r Xr ; Xr' Mρ1r ], [ Mρ0i Xi ; -Xi' Mρ1i ] ) )
 
-        solve!(prob)
+        solve!(prob, SCSSolver(verbose=0, eps=1e-6, max_iters=5_000))
 
         if prob.status != :Optimal
             #println("DNORM warning.")

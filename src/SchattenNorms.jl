@@ -16,6 +16,8 @@
 # VERSION >= v"0.4.0" && __precompile__()
 module SchattenNorms
 
+import LinearAlgebra: svdvals, norm
+
 export snorm, nucnorm, trnorm, specnorm, fnorm, dnorm, ddist, ddistu, worstfidelity
 
 """
@@ -39,7 +41,7 @@ fnorm(m)
 
 Computes the Frobenius norm of a matrix `m`.
 """
-fnorm(m::AbstractMatrix) = vecnorm(m,2)
+fnorm(m::AbstractMatrix) = norm(m,2)
 
 """
 specnorm(m)
@@ -56,7 +58,7 @@ snorm(m,p=2)
 Computes the `p`-Schatten norm of a matrix `m`.
 """
 function snorm(m::AbstractMatrix,p=2.0)
-    p == 2.0 && return vecnorm(m,2)
+    p == 2.0 && return norm(m,2)
     return norm(svdvals(m),p)
 end
 

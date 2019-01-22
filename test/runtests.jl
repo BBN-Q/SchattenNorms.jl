@@ -1,7 +1,10 @@
 using SchattenNorms
-using Base.Test
+using Test
 
-srand(31415926)
+import Random
+import LinearAlgebra
+
+Random.seed!(31415926)
 
 @test isapprox(snorm([1 0; 0 -1]),sqrt(2.0))
 @test isapprox(snorm([1 0; 0 -1],1.0),2.0)
@@ -10,16 +13,16 @@ srand(31415926)
 for i=1:100
     for d=2:4
         R = randn(d,d)
-        U,_,_ = svd(randn(d,d))
-        V,_,_ = svd(randn(d,d))
-        p = sort(abs(randn(3))+1.0)
+        U,_,_ = LinearAlgebra.svd(randn(d,d))
+        V,_,_ = LinearAlgebra.svd(randn(d,d))
+        p = sort(abs.(randn(3)) .+ 1.0)
         @test isapprox(snorm(R),snorm(R,2.0))
         @test isapprox(snorm(U*R*V,1),snorm(R,1))
         @test isapprox(snorm(U*R*V),snorm(R,2.0))
         @test isapprox(snorm(U*R*V,Inf),snorm(R,Inf))
         @test isapprox(snorm(U*R*V,p[1]),snorm(R,p[1]))
-        @test snorm(R,1) >= snorm(R,2) >= snorm(R,Inf) 
-        @test snorm(R,p[1]) >= snorm(R,p[2]) >= snorm(R,p[3]) 
+        @test snorm(R,1) >= snorm(R,2) >= snorm(R,Inf)
+        @test snorm(R,p[1]) >= snorm(R,p[2]) >= snorm(R,p[3])
         @test snorm(R,1.0) == snorm(R,1) == trnorm(R) == nucnorm(R)
     end
 end
