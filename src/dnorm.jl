@@ -162,7 +162,8 @@ let # wat09b
         prob.constraints += isposdef( ϕ(Wr,Wi) )
         prob.constraints += isposdef( ϕ(Mr,Mi) - ϕ(Wr,Wi) )
 
-        solve!(prob, SCSSolver(verbose=0, eps=1e-6, max_iters=5_000))
+        solve!(prob, SCSSolver(verbose=0, eps=1e-6, max_iters=5_000,
+            acceleration_lookback=1, alpha=1.9))
 
         if prob.status != :Optimal
             #println("DNORM_CPTP warning.")
@@ -214,7 +215,8 @@ let # wat09b
         prob.constraints += isposdef( ϕ(Zr,Zi) )
         prob.constraints += isposdef( ϕ(Zr,Zi) - ϕ(Jr,Ji) )
 
-        solve!(prob, SCSSolver(verbose=0, eps=1e-6, max_iters=5_000))
+        solve!(prob, SCSSolver(verbose=0, eps=1e-6, max_iters=5_000,
+            acceleration_lookback=1, alpha=1.9))
 
         if prob.status != :Optimal
             #println("DNORM_CPTP warning.")
@@ -275,7 +277,8 @@ let # wat13b
         prob.constraints += isposdef( ϕ(Y1r,Y1i) )
         prob.constraints += isposdef( ϕ( [ Y0r -Jr ; -Jr' Y1r ], [ Y0i -Xi ; Xi' Y1i ] ) )
 
-        solve!(prob, SCSSolver(verbose=0, eps=1e-6, max_iters=5_000))
+        solve!(prob, SCSSolver(verbose=0, eps=1e-6, max_iters=5_000,
+            acceleration_lookback=1, alpha=1.9))
 
         if prob.status != :Optimal
             #println("DNORM_CPTP warning.")
@@ -343,7 +346,8 @@ let # wat13b
 
         prob.constraints += isposdef( ϕ( [ Mρ0r Xr ; Xr' Mρ1r ], [ Mρ0i Xi ; -Xi' Mρ1i ] ) )
 
-        solve!(prob, SCSSolver(verbose=0, eps=1e-6, max_iters=5_000))
+        solve!(prob, SCSSolver(verbose=0, eps=1e-6, max_iters=5_000,
+            acceleration_lookback=1, alpha=1.9))
 
         if prob.status != :Optimal
             #println("DNORM warning.")
