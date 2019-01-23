@@ -125,16 +125,16 @@ end
 
 for i in 1:20
     for d in [2,3,4]
-        u = rand_unitary(d)
-        uu = liou(u)
-        v = rand_unitary(d)
-        vv = liou(v)
+        global u = rand_unitary(d)
+        global uu = liou(u)
+        global v = rand_unitary(d)
+        global vv = liou(v)
 
-        duv  = ddistu(u,v)
-        duv2 = ddistu(u*v',eye(d))
-        duv3 = ddistu(v'u,eye(d))
-        duv4 = ddistu(eye(d),u'*v)
-        duv5 = ddistu(eye(d),v*u')
+        global duv  = ddistu(u,v)
+        global duv2 = ddistu(u*v',eye(d))
+        global duv3 = ddistu(v'u,eye(d))
+        global duv4 = ddistu(eye(d),u'*v)
+        global duv5 = ddistu(eye(d),v*u')
 
         @test isapprox(duv, duv2, atol=1e-10)
         @test isapprox(duv, duv3, atol=1e-10)
