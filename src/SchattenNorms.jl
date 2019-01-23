@@ -1,3 +1,5 @@
+__precompile__(false)
+
 #    Copyright 2015 Raytheon BBN Technologies
 #
 #     Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,13 +14,13 @@
 #     See the License for the specific language governing permissions and
 #     limitations under the License.
 
-# precompilation disabled because of the Convex.jl dependency
-# VERSION >= v"0.4.0" && __precompile__()
+
 module SchattenNorms
 
 import LinearAlgebra: svdvals, norm
 
 export snorm, nucnorm, trnorm, specnorm, fnorm, dnorm, ddist, ddistu, worstfidelity
+
 
 """
 nucnorm(m)
@@ -26,7 +28,7 @@ nucnorm(m)
 Computes the nuclear norm of a matrix `m`.
 """
 function nucnorm(m::AbstractMatrix)
-    norm(svdvals(m),1)
+    LinearAlgebra.norm(LinearAlgebra.svdvals(m),1)
 end
 
 """
@@ -49,7 +51,7 @@ specnorm(m)
 Computes the spectral norm of a matrix `m` (i.e., the maximum singular value).
 """
 function specnorm(m::AbstractMatrix)
-    return norm(svdvals(m),Inf)
+    return LinearAlgebra.norm(LinearAlgebra.svdvals(m),Inf)
 end
 
 """

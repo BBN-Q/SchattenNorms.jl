@@ -1,10 +1,11 @@
 using Test, Convex, Cliffords, SCS, SchattenNorms, Distributions, QuantumInfo
+import Random
 
 import Base.kron
 
 set_default_solver(SCSSolver(verbose=0, eps=1e-6, max_iters=5_000))
 
-function paulichannel{T<:Real}(p::Vector{T})
+function paulichannel(p::Vector{T}) where T <: Real
     n_ = log(4,length(p))
     if !isinteger(n_)
         error("Probability vector must have length 4^n for some integer n")
@@ -22,7 +23,7 @@ function dnormp(p1,p2)
     return norm(p1-p2,1)
 end
 
-srand(123456)
+Random.seed!(123456)
 
 p1 = randp(2)
 p2 = randp(2)

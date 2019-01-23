@@ -52,12 +52,11 @@ function worstfidelity(u::Matrix, v::Matrix)
         if n==2
             f = orig_to_line(d[1],d[2])
         else
-            dn = dist_to_neighbour(map(x -> angle(x), d))
+            dn = dist_to_neighbour(angle.(d))
             dn[1] = 2*pi-sum(dn[2:n])  # the sum of the angular separations is 2*pi
             # and the boundary cases are funny
             # so it is best to calc it this way
-            #dn = find(dn .> pi)
-            dn = findall(x -> x .> pi, dn)
+            dn = findall(dn .> pi)
             if length(dn)==1
                 f = orig_to_line(d[dn[1]],d[mod(dn[1]-2,n)+1])
             end
