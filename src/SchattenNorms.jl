@@ -28,7 +28,7 @@ nucnorm(m)
 Computes the nuclear norm of a matrix `m`.
 """
 function nucnorm(m::AbstractMatrix)
-    LinearAlgebra.norm(LinearAlgebra.svdvals(m),1)
+    norm(svdvals(m),1)
 end
 
 """
@@ -51,7 +51,7 @@ specnorm(m)
 Computes the spectral norm of a matrix `m` (i.e., the maximum singular value).
 """
 function specnorm(m::AbstractMatrix)
-    return LinearAlgebra.norm(LinearAlgebra.svdvals(m),Inf)
+    return norm(svdvals(m),Inf)
 end
 
 """

@@ -1,5 +1,7 @@
 using SchattenNorms
 using Test
+using LinearAlgebra
+
 import Random
 import LinearAlgebra
 

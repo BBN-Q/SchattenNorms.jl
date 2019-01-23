@@ -66,7 +66,7 @@ function retrϕ(m)
 end
 
 function ket(i,d)
-    v = SparseArrays.spzeros(Float64,d,1)
+    v = spzeros(Float64,d,1)
     v[i+1] = 1.0
     return v
 end
@@ -84,7 +84,7 @@ Note that the dual of this map is F such that F*vec(σ ⊗ ρ) → trace(σ) vec
 in other words, E is the dual of the partial trace.
 """
 function E_(id_dim, ρ_dim)
-    M = SparseArrays.spzeros(Float64,id_dim^2*ρ_dim^2,ρ_dim^2)
+    M = spzeros(Float64,id_dim^2*ρ_dim^2,ρ_dim^2)
     for m in 0:ρ_dim-1
         for n in 0:ρ_dim-1
             for k in 0:id_dim-1
@@ -164,7 +164,7 @@ let # wat09b
         prob.constraints += Convex.isposdef( ϕ(Mr,Mi) - ϕ(Wr,Wi) )
 
         Convex.solve!(prob, SCSSolver(verbose=0, eps=1e-6, max_iters=5_000,
-            acceleration_lookback=1, alpha=1.9)))
+            acceleration_lookback=1, alpha=1.9))
 
         if prob.status != :Optimal
             #println("DNORM_CPTP warning.")
@@ -218,7 +218,7 @@ let # wat09b
         prob.constraints += Convex.isposdef( ϕ(Zr,Zi) - ϕ(Jr,Ji) )
 
         Convex.solve!(prob, SCSSolver(verbose=0, eps=1e-6, max_iters=5_000,
-            acceleration_lookback=1, alpha=1.9)))
+            acceleration_lookback=1, alpha=1.9))
 
         if prob.status != :Optimal
             #println("DNORM_CPTP warning.")
@@ -282,7 +282,7 @@ let # wat13b
         prob.constraints += Convex.isposdef( ϕ( [ Y0r -Jr ; -Jr' Y1r ], [ Y0i -Xi ; Xi' Y1i ] ) )
 
         Convex.solve!(prob, SCSSolver(verbose=0, eps=1e-6, max_iters=5_000,
-            acceleration_lookback=1, alpha=1.9)))
+            acceleration_lookback=1, alpha=1.9))
 
         if prob.status != :Optimal
             #println("DNORM_CPTP warning.")
@@ -313,7 +313,7 @@ let # wat13b
 
     prev_dx = -1
 
-
+    function dnorm(L)
         J = involution(L)
 
         dx = size(J,1) |> sqrt |> x -> round(Int,x)
@@ -353,7 +353,7 @@ let # wat13b
         prob.constraints += Convex.isposdef( ϕ( [ Mρ0r Xr ; Xr' Mρ1r ], [ Mρ0i Xi ; -Xi' Mρ1i ] ) )
 
         Convex.solve!(prob, SCSSolver(verbose=0, eps=1e-6, max_iters=5_000,
-            acceleration_lookback=1, alpha=1.9)))
+            acceleration_lookback=1, alpha=1.9))
 
         if prob.status != :Optimal
             #println("DNORM warning.")

@@ -17,7 +17,7 @@ end
 
 @testset "maximal dnorm examples" begin
     let # variable scope for cnot
-        cnot = float([1 0 0 0; 0 1 0 0; 0 0 0 1; 1 0 1 0])
+        cnot = float([1 0 0 0; 0 1 0 0; 0 0 0 1; 0 0 1 0])
         cnotL = liou(cnot)
         @test isapprox(2.0, dnorm(cnotL-eye(16)), atol=1e-5)
         @test isapprox(2.0, ddist(cnotL,eye(16)), atol=1e-5)
@@ -128,23 +128,24 @@ end
         end
     end
 
-for i in 1:20
-    for d in [2,3,4]
-        global u = rand_unitary(d)
-        global uu = liou(u)
-        global v = rand_unitary(d)
-        global vv = liou(v)
+    for i in 1:20
+        for d in [2,3,4]
+            global u = rand_unitary(d)
+            global uu = liou(u)
+            global v = rand_unitary(d)
+            global vv = liou(v)
 
-        global duv  = ddistu(u,v)
-        global duv2 = ddistu(u*v',eye(d))
-        global duv3 = ddistu(v'u,eye(d))
-        global duv4 = ddistu(eye(d),u'*v)
-        global duv5 = ddistu(eye(d),v*u')
+            global duv  = ddistu(u,v)
+            global duv2 = ddistu(u*v',eye(d))
+            global duv3 = ddistu(v'u,eye(d))
+            global duv4 = ddistu(eye(d),u'*v)
+            global duv5 = ddistu(eye(d),v*u')
 
-        @test isapprox(duv, duv2, atol=1e-10)
-        @test isapprox(duv, duv3, atol=1e-10)
-        @test isapprox(duv, duv4, atol=1e-10)
-        @test isapprox(duv, duv5, atol=1e-10)
+            @test isapprox(duv, duv2, atol=1e-10)
+            @test isapprox(duv, duv3, atol=1e-10)
+            @test isapprox(duv, duv4, atol=1e-10)
+            @test isapprox(duv, duv5, atol=1e-10)
+        end
     end
 end
 
