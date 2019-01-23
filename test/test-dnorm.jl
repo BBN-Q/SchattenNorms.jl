@@ -20,10 +20,10 @@ end
 cnot = [1. 0. 0. 0.; 0. 1. 0. 0.; 0. 0. 0. 1.; 0. 0. 1. 0.]
 cnotL = liou(cnot)
 
-u = rand_unitary(2)
-uu = liou(u)
-v = rand_unitary(2)
-vv = liou(v)
+global u = rand_unitary(2)
+global uu = liou(u)
+global v = rand_unitary(2)
+global vv = liou(v)
 
 println("Testing maximal dnorm examples ...")
 
@@ -97,12 +97,12 @@ end
 
 println("Testing unitary invariance of dnorm ...")
 
-duv  = dnorm(uu-vv)
+global duv  = dnorm(uu-vv)
 @time begin
-    duv2 = dnorm(uu*vv'-eye(4))
-    duv3 = dnorm(vv'*uu-eye(4))
-    duv4 = dnorm(eye(4)-uu'*vv)
-    duv5 = dnorm(eye(4)-vv*uu')
+    global duv2 = dnorm(uu*vv'-eye(4))
+    global duv3 = dnorm(vv'*uu-eye(4))
+    global duv4 = dnorm(eye(4)-uu'*vv)
+    global duv5 = dnorm(eye(4)-vv*uu')
 end
 
 @test isapprox(duv, duv2, atol=1e-5)
