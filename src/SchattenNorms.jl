@@ -1,3 +1,5 @@
+__precompile__(false)
+
 #    Copyright 2015 Raytheon BBN Technologies
 #
 #     Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,11 +14,13 @@
 #     See the License for the specific language governing permissions and
 #     limitations under the License.
 
-# precompilation disabled because of the Convex.jl dependency
-# VERSION >= v"0.4.0" && __precompile__()
+
 module SchattenNorms
 
+import LinearAlgebra: svdvals, norm
+
 export snorm, nucnorm, trnorm, specnorm, fnorm, dnorm, ddist, ddistu, worstfidelity
+
 
 """
 nucnorm(m)
@@ -39,7 +43,7 @@ fnorm(m)
 
 Computes the Frobenius norm of a matrix `m`.
 """
-fnorm(m::AbstractMatrix) = vecnorm(m,2)
+fnorm(m::AbstractMatrix) = norm(m,2)
 
 """
 specnorm(m)
@@ -56,7 +60,7 @@ snorm(m,p=2)
 Computes the `p`-Schatten norm of a matrix `m`.
 """
 function snorm(m::AbstractMatrix,p=2.0)
-    p == 2.0 && return vecnorm(m,2)
+    p == 2.0 && return norm(m,2)
     return norm(svdvals(m),p)
 end
 

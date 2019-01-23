@@ -1,7 +1,10 @@
 language: julia
+os:
+  - linux
+  - osx
 julia:
-  - 0.4
-  - 0.5
+  - 0.7
+  - 1.0
   - nightly
 matrix:
   allowed_failures:
@@ -9,6 +12,6 @@ matrix:
 notifications:
   email: false
 # uncomment the following lines to override the default test script
-#script:
-#  - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
-#  - julia --check-bounds=yes -e 'Pkg.clone(pwd()); Pkg.build("SchattenNorms"); Pkg.test("SchattenNorms"; coverage=true)'
+script:
+  - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
+  - julia --check-bounds=yes --color=yes -e 'using Pkg; Pkg.add(PackageSpec(url=pwd())); Pkg.develop("QuantumInfo"); Pkg.develop("Cliffords"); Pkg.build("SchattenNorms"); Pkg.test("SchattenNorms"; coverage=true)'

@@ -12,7 +12,10 @@
 #     See the License for the specific language governing permissions and
 #     limitations under the License.
 
-using Convex
+using SCS
+
+import Convex
+import SparseArrays: spzeros
 
 """
  ϕ represents the isomorphism between complex and real matrices.
@@ -54,11 +57,12 @@ function ϕinv(m)
    ϕr(m) + 1im*ϕi(m)
 end
 
+# NOTE: This function is unused
 """
 Compute the trace of the real representation of a complex matrix.
 """
 function retrϕ(m)
-    trace(ϕr(m))
+    Convex.tr(ϕr(m))
 end
 
 function ket(i,d)
@@ -76,9 +80,8 @@ E_(id_dim, ρ_rim)
 
 Generates linear map E such that E(ρ) → 1 ⊗ ρ
 
-Note that the dual of this map is F such that F*vec(σ ⊗ ρ) → trace(σ) vec(ρ), 
+Note that the dual of this map is F such that F*vec(σ ⊗ ρ) → trace(σ) vec(ρ),
 in other words, E is the dual of the partial trace.
-
 """
 function E_(id_dim, ρ_dim)
     M = spzeros(Float64,id_dim^2*ρ_dim^2,ρ_dim^2)
@@ -107,22 +110,24 @@ function involution(m)
     return reshape(permutedims(reshape(m,(d,d,d,d)),[2,4,1,3]),(dsq,dsq))
 end
 
+"""
+dnormcptp(L1,L2)
+
+Computes the diamond norm of a linear superoperator `L` (i.e., a
+linear transformation of operators). The superoperator must be
+represented in column major form. In other words, it must be given
+by a matrix that, when multiplying a vectorized (column major)
+operator, it should result in the vectorized (column major)
+representation of the result of the transformation.
+"""
+function dnormcptp2 end
+
 let # wat09b
     global dnormcptp2
     local prev_dy, F
 
     prev_dy = -1
 
-    """
-    dnormcptp(L1,L2) 
-
-    Computes the diamond norm of a linear superoperator `L` (i.e., a
-    linear transformation of operators). The superoperator must be
-    represented in column major form. In other words, it must be given
-    by a matrix that, when multiplying a vectorized (column major)
-    operator, it should result in the vectorized (column major)
-    representation of the result of the transformation.
-    """
     function dnormcptp2(L1,L2)
         J = involution(L1-L2)
 
@@ -137,39 +142,49 @@ let # wat09b
         Jr = real(J)
         Ji = imag(J)
 
-        Wr = Variable(dy*dx, dy*dx)
-        Wi = Variable(dy*dx, dy*dx)
+        Wr = Convex.Variable(dy*dx, dy*dx)
+        Wi = Convex.Variable(dy*dx, dy*dx)
 
-        Mr = Variable(dy*dx, dy*dx)
-        Mi = Variable(dy*dx, dy*dx)
+        Mr = Convex.Variable(dy*dx, dy*dx)
+        Mi = Convex.Variable(dy*dx, dy*dx)
 
-        ρr = Variable(dx, dx)
-        ρi = Variable(dx, dx)
+        ρr = Convex.Variable(dx, dx)
+        ρi = Convex.Variable(dx, dx)
 
-        prob = maximize( trace( Jr*Wr + Ji*Wi ) )
+        prob = Convex.maximize( Convex.tr( Jr*Wr + Ji*Wi ) )
 
-        prob.constraints += trace(ρr) == 1
-        prob.constraints += trace(ρi) == 0
-        
+        prob.constraints += Convex.tr(ρr) == 1
+        prob.constraints += Convex.tr(ρi) == 0
+
         Mr = reshape(F*vec(ρr), dy*dx, dy*dx)
         Mi = reshape(F*vec(ρi), dy*dx, dy*dx)
 
-        prob.constraints += isposdef( ϕ(ρr,ρi) )
-        prob.constraints += isposdef( ϕ(Wr,Wi) )
-        prob.constraints += isposdef( ϕ(Mr,Mi) - ϕ(Wr,Wi) )
-            
-        solve!(prob)
+        prob.constraints += Convex.isposdef( ϕ(ρr,ρi) )
+        prob.constraints += Convex.isposdef( ϕ(Wr,Wi) )
+        prob.constraints += Convex.isposdef( ϕ(Mr,Mi) - ϕ(Wr,Wi) )
+
+        Convex.solve!(prob, SCSSolver(verbose=0, eps=1e-6, max_iters=5_000,
+            acceleration_lookback=1, alpha=1.9))
 
         if prob.status != :Optimal
             #println("DNORM_CPTP warning.")
             #println("Input: $(L)")
             #println("Input's Choi spectrum: $(eigvals(liou2choi(L)))")
-            warn("Diamond norm calculation did not converge.")
+            @warn("Diamond norm calculation did not converge.")
         end
 
         return 2*prob.optval
     end
 end
+
+"""
+dnormcptp(L1,L2)
+
+Computes the diamond norm distance between two linear completely
+positive and trace preserving superoperators `L1` and `L2` . The
+superoperators must be represented in column major form.
+"""
+function dnormcptp end
 
 let # wat09b
     global dnormcptp
@@ -177,14 +192,6 @@ let # wat09b
 
     prev_dy = -1
 
-    """
-    dnormcptp(L1,L2) 
-
-    Computes the diamond norm distance between two linear completely
-    positive and trace preserving superoperators `L1` and `L2` . The
-    superoperators must be represented in column major form.
-
-    """
     function dnormcptp(L1,L2)
         J = involution(L1-L2)
 
@@ -199,29 +206,42 @@ let # wat09b
         Jr = real(J)
         Ji = imag(J)
 
-        Zr = Variable(dy*dx, dy*dx)
-        Zi = Variable(dy*dx, dy*dx)
+        Zr = Convex.Variable(dy*dx, dy*dx)
+        Zi = Convex.Variable(dy*dx, dy*dx)
 
         pZr = reshape(F*vec(Zr), dx, dx)
         pZi = reshape(F*vec(Zi), dx, dx)
 
-        prob = minimize( operatornorm( ϕ(pZr, pZi) ) )
+        prob = Convex.minimize( Convex.opnorm( ϕ(pZr, pZi) ) )
 
-        prob.constraints += isposdef( ϕ(Zr,Zi) )
-        prob.constraints += isposdef( ϕ(Zr,Zi) - ϕ(Jr,Ji) )
-            
-        solve!(prob)
+        prob.constraints += Convex.isposdef( ϕ(Zr,Zi) )
+        prob.constraints += Convex.isposdef( ϕ(Zr,Zi) - ϕ(Jr,Ji) )
+
+        Convex.solve!(prob, SCSSolver(verbose=0, eps=1e-6, max_iters=5_000,
+            acceleration_lookback=1, alpha=1.9))
 
         if prob.status != :Optimal
             #println("DNORM_CPTP warning.")
             #println("Input: $(L)")
             #println("Input's Choi spectrum: $(eigvals(liou2choi(L)))")
-            warn("Diamond norm calculation did not converge.")
+            @warn("Diamond norm calculation did not converge.")
         end
 
         return 2*prob.optval
     end
 end
+
+"""
+dnorm2(L1,L2)
+
+Computes the diamond norm of a linear superoperator `L` (i.e., a
+linear transformation of operators). The superoperator must be
+represented in column major form. In other words, it must be given
+by a matrix that, when multiplying a vectorized (column major)
+operator, it should result in the vectorized (column major)
+representation of the result of the transformation.
+"""
+function dnorm2 end
 
 let # wat13b
     global dnorm2
@@ -229,16 +249,6 @@ let # wat13b
 
     prev_dy = -1
 
-    """
-    dnorm(L1,L2) 
-
-    Computes the diamond norm of a linear superoperator `L` (i.e., a
-    linear transformation of operators). The superoperator must be
-    represented in column major form. In other words, it must be given
-    by a matrix that, when multiplying a vectorized (column major)
-    operator, it should result in the vectorized (column major)
-    representation of the result of the transformation.
-    """
     function dnorm2(L1,L2)
         J = involution(L1-L2)
 
@@ -253,36 +263,49 @@ let # wat13b
         Jr = real(J)
         Ji = imag(J)
 
-        Y0r = Variable(dy*dx, dy*dx)
-        Y0i = Variable(dy*dx, dy*dx)
+        Y0r = Convex.Variable(dy*dx, dy*dx)
+        Y0i = Convex.Variable(dy*dx, dy*dx)
 
-        Y1r = Variable(dy*dx, dy*dx)
-        Y1i = Variable(dy*dx, dy*dx)
+        Y1r = Convex.Variable(dy*dx, dy*dx)
+        Y1i = Convex.Variable(dy*dx, dy*dx)
 
-        prob = minimize( operatornorm(ϕ( ρ0r, ρ0i )) + operatornorm(ϕ( ρ1r, ρ1i )))
-        
+        prob = Convex.minimize( Convex.opnorm(ϕ( ρ0r, ρ0i )) + Convex.opnorm(ϕ( ρ1r, ρ1i )))
+
         ρ0r = reshape(F*vec(Y0r), dx, dx)
         ρ0i = reshape(F*vec(Y0i), dx, dx)
 
         ρ1r = reshape(F*vec(Y1r), dx, dx)
         ρ1i = reshape(F*vec(Y1i), dx, dx)
 
-        prob.constraints += isposdef( ϕ(Y0r,Y0i) )
-        prob.constraints += isposdef( ϕ(Y1r,Y1i) )
-        prob.constraints += isposdef( ϕ( [ Y0r -Jr ; -Jr' Y1r ], [ Y0i -Xi ; Xi' Y1i ] ) )
-            
-        solve!(prob)
+        prob.constraints += Convex.isposdef( ϕ(Y0r,Y0i) )
+        prob.constraints += Convex.isposdef( ϕ(Y1r,Y1i) )
+        prob.constraints += Convex.isposdef( ϕ( [ Y0r -Jr ; -Jr' Y1r ], [ Y0i -Xi ; Xi' Y1i ] ) )
+
+        Convex.solve!(prob, SCSSolver(verbose=0, eps=1e-6, max_iters=5_000,
+            acceleration_lookback=1, alpha=1.9))
 
         if prob.status != :Optimal
             #println("DNORM_CPTP warning.")
             #println("Input: $(L)")
             #println("Input's Choi spectrum: $(eigvals(liou2choi(L)))")
-            warn("Diamond norm calculation did not converge.")
+            @warn("Diamond norm calculation did not converge.")
         end
 
         return 2*prob.optval
     end
 end
+
+"""
+dnorm(L; solver=Convex.get_default_solver())
+
+Computes the diamond norm of a linear superoperator `L` (i.e., a
+linear transformation of operators). The superoperator must be
+represented in column major form. In other words, it must be given
+by a matrix that, when multiplying a vectorized (column major)
+operator, it should result in the vectorized (column major)
+representation of the result of the transformation.
+"""
+function dnorm end
 
 let # wat13b
     global dnorm
@@ -290,16 +313,6 @@ let # wat13b
 
     prev_dx = -1
 
-    """
-    dnorm(L) 
-
-    Computes the diamond norm of a linear superoperator `L` (i.e., a
-    linear transformation of operators). The superoperator must be
-    represented in column major form. In other words, it must be given
-    by a matrix that, when multiplying a vectorized (column major)
-    operator, it should result in the vectorized (column major)
-    representation of the result of the transformation.
-    """
     function dnorm(L)
         J = involution(L)
 
@@ -314,38 +327,39 @@ let # wat13b
         Jr = real(J)
         Ji = imag(J)
 
-        Xr  = Variable(dy*dx, dy*dx)
-        Xi  = Variable(dy*dx, dy*dx)
-        ρ0r = Variable(dx, dx)
-        ρ0i = Variable(dx, dx)
-        ρ1r = Variable(dx, dx)
-        ρ1i = Variable(dx, dx)
+        Xr  = Convex.Variable(dy*dx, dy*dx)
+        Xi  = Convex.Variable(dy*dx, dy*dx)
+        ρ0r = Convex.Variable(dx, dx)
+        ρ0i = Convex.Variable(dx, dx)
+        ρ1r = Convex.Variable(dx, dx)
+        ρ1i = Convex.Variable(dx, dx)
 
-        prob = maximize( trace( Jr*Xr + Ji*Xi ) )
+        prob = Convex.maximize( Convex.tr( Jr*Xr + Ji*Xi ) )
 
-        prob.constraints += trace(ρ0r) == 1
-        prob.constraints += trace(ρ0i) == 0
-        prob.constraints += trace(ρ1r) == 1
-        prob.constraints += trace(ρ1i) == 0
+        prob.constraints += Convex.tr(ρ0r) == 1
+        prob.constraints += Convex.tr(ρ0i) == 0
+        prob.constraints += Convex.tr(ρ1r) == 1
+        prob.constraints += Convex.tr(ρ1i) == 0
 
         Mρ0r = reshape(M * vec(ρ0r), dy*dx, dy*dx)
         Mρ0i = reshape(M * vec(ρ0i), dy*dx, dy*dx)
         Mρ1r = reshape(M * vec(ρ1r), dy*dx, dy*dx)
         Mρ1i = reshape(M * vec(ρ1i), dy*dx, dy*dx)
 
-        prob.constraints += isposdef( ϕ(ρ0r,ρ0i) )
+        prob.constraints += Convex.isposdef( ϕ(ρ0r,ρ0i) )
 
-        prob.constraints += isposdef( ϕ(ρ1r,ρ1i) )
+        prob.constraints += Convex.isposdef( ϕ(ρ1r,ρ1i) )
 
-        prob.constraints += isposdef( ϕ( [ Mρ0r Xr ; Xr' Mρ1r ], [ Mρ0i Xi ; -Xi' Mρ1i ] ) )
+        prob.constraints += Convex.isposdef( ϕ( [ Mρ0r Xr ; Xr' Mρ1r ], [ Mρ0i Xi ; -Xi' Mρ1i ] ) )
 
-        solve!(prob)
+        Convex.solve!(prob, SCSSolver(verbose=0, eps=1e-6, max_iters=5_000,
+            acceleration_lookback=1, alpha=1.9))
 
         if prob.status != :Optimal
             #println("DNORM warning.")
             #println("Input: $(L)")
             #println("Input's Choi spectrum: $(eigvals(liou2choi(L)))")
-            warn("Diamond norm calculation did not converge.")
+            @warn("Diamond norm calculation did not converge.")
         end
 
         return prob.optval
