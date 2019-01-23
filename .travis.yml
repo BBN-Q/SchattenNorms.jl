@@ -10,6 +10,5 @@ notifications:
   email: false
 # uncomment the following lines to override the default test script
 #script:
-  - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
-  - julia --check-bounds=yes -e 'using Pkg;Pkg.add(PackageSpec(url=pwd()));Pkg.develop("QuantumInfo");Pkg.build("SchattenNorms"); Pkg.test("SchattenNorms"; coverage=true)'
-  
+  # - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
+  # - julia --check-bounds=yes -e 'using Pkg;Pkg.add(PackageSpec(url=pwd()));Pkg.develop("QuantumInfo");Pkg.build("SchattenNorms"); Pkg.test("SchattenNorms"; coverage=true)'
