@@ -3,7 +3,7 @@ import Random
 
 import Base.kron
 
-set_default_solver(SCSSolver(verbose=0, eps=1e-6, max_iters=5_000))
+set_default_solver(SCS.Optimizer(verbose=0, eps=1e-6, max_iters=5_000))
 
 function paulichannel(p::Vector{T}) where T <: Real
     n_ = log(4,length(p))
