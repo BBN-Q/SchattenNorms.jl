@@ -1,11 +1,5 @@
 # This file is machine-generated - editing it directly is not advised
 
-[[AbstractTrees]]
-deps = ["Markdown"]
-git-tree-sha1 = "33e450545eaf7699da1a6e755f9ea65f14077a45"
-uuid = "1520ce14-60c1-5f80-bbc7-55ef81b5835c"
-version = "0.3.3"
-
 [[Artifacts]]
 deps = ["Pkg"]
 git-tree-sha1 = "c30985d8821e0cd73870b17b0ed0ce6dc44cb744"
@@ -45,21 +39,25 @@ git-tree-sha1 = "ded953804d019afa9a3f98981d99b33e3db7b6da"
 uuid = "944b1d66-785c-5afd-91f1-9de20f533193"
 version = "0.7.0"
 
-[[CompilerSupportLibraries_jll]]
-deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
-git-tree-sha1 = "8e695f735fca77e9708e795eda62afdb869cbb70"
-uuid = "e66e0078-7015-5450-92f7-15fbd957f2ae"
-version = "0.3.4+0"
+[[Compat]]
+deps = ["Base64", "Dates", "DelimitedFiles", "Distributed", "InteractiveUtils", "LibGit2", "Libdl", "LinearAlgebra", "Markdown", "Mmap", "Pkg", "Printf", "REPL", "Random", "Serialization", "SharedArrays", "Sockets", "SparseArrays", "Statistics", "Test", "UUIDs", "Unicode"]
+git-tree-sha1 = "b0b7e8a0d054fada22b64095b46469627a138943"
+uuid = "34da2185-b29b-5c13-b0c7-acf172513d20"
+version = "2.2.1"
 
 [[Convex]]
-deps = ["AbstractTrees", "BenchmarkTools", "LinearAlgebra", "MathOptInterface", "OrderedCollections", "SparseArrays", "Test"]
-git-tree-sha1 = "2cb7d5ec0f57a98f83d59471c519b7aded1925d5"
+deps = ["LinearAlgebra", "MathProgBase", "OrderedCollections", "Random", "SparseArrays", "Statistics", "Test"]
+git-tree-sha1 = "fed093534a71912bd11ce2bc0d5946ddb000b408"
 uuid = "f65535da-76fb-5f13-bab9-19810c17039a"
-version = "0.13.8"
+version = "0.11.3"
 
 [[Dates]]
 deps = ["Printf"]
 uuid = "ade2ca70-3891-5945-98fb-dc099432e06a"
+
+[[DelimitedFiles]]
+deps = ["Mmap"]
+uuid = "8bb1440f-4735-579b-a4ab-409b98df4dab"
 
 [[Distributed]]
 deps = ["Random", "Serialization", "Sockets"]
@@ -149,12 +147,6 @@ git-tree-sha1 = "7631203bddc2424717fa42ecda2a5fed9ff36af0"
 uuid = "d8a4904e-b15c-11e9-3269-09a3773c0cb0"
 version = "0.2.12"
 
-[[OpenBLAS_jll]]
-deps = ["CompilerSupportLibraries_jll", "Libdl", "Pkg"]
-git-tree-sha1 = "0c922fd9634e358622e333fc58de61f05a048492"
-uuid = "4536629a-c528-5b80-bd46-f80d51c5b363"
-version = "0.3.9+5"
-
 [[OrderedCollections]]
 git-tree-sha1 = "cf59cfed2e2c12e8a2ff0a4f1e9b2cd8650da6db"
 uuid = "bac558e1-5e72-5ebc-8fee-abe8a469f55d"
@@ -182,35 +174,21 @@ uuid = "3fa0cd96-eef1-5676-8a61-b3b8758bbffb"
 deps = ["Serialization"]
 uuid = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 
-[[Requires]]
-deps = ["UUIDs"]
-git-tree-sha1 = "cfbac6c1ed70c002ec6361e7fd334f02820d6419"
-uuid = "ae029012-a4dd-5104-9daa-d747884805df"
-version = "1.1.2"
-
 [[SCS]]
-deps = ["BinaryProvider", "Libdl", "LinearAlgebra", "MathOptInterface", "MathProgBase", "Requires", "SCS_GPU_jll", "SCS_jll", "SparseArrays"]
-git-tree-sha1 = "efc1cf417dffb455b74a3d48857ae418098fc8a1"
+deps = ["BinaryProvider", "Compat", "Libdl", "MathOptInterface", "MathProgBase"]
+git-tree-sha1 = "f3372fde752302d3cd38d00e2adaf3a7731f7061"
 uuid = "c946c3f1-0d1f-5ce8-9dea-7daa1f7e2d13"
-version = "0.7.1"
-
-[[SCS_GPU_jll]]
-deps = ["Libdl", "OpenBLAS_jll", "Pkg"]
-git-tree-sha1 = "44badbd675d79303fd5b0a7a5380ed7624bd989a"
-uuid = "af6e375f-46ec-5fa0-b791-491b0dfa44a4"
-version = "2.1.2+0"
-
-[[SCS_jll]]
-deps = ["Artifacts", "JLLWrappers", "Libdl", "OpenBLAS_jll", "Pkg"]
-git-tree-sha1 = "6cdaccb5e6a69455f960de1ae445ba1de5db9d0d"
-uuid = "f4f2fc5b-1d94-523c-97ea-2ab488bedf4b"
-version = "2.1.2+1"
+version = "0.5.1"
 
 [[SHA]]
 uuid = "ea8e919c-243c-51af-8825-aaa63cd721ce"
 
 [[Serialization]]
 uuid = "9e88b42a-f829-5b0c-bbe9-9e923198166b"
+
+[[SharedArrays]]
+deps = ["Distributed", "Mmap", "Random", "Serialization"]
+uuid = "1a1011a3-84de-559e-8e89-a11a2f7dc383"
 
 [[Sockets]]
 uuid = "6462fe0b-24de-5631-8697-dd941f90decc"
