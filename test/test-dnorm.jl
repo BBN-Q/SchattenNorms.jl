@@ -25,27 +25,27 @@ end
     end
 
     @test isapprox(2.0, dnorm(eye(4)-liou(x)), atol=1e-5)
-    @test isapprox(2.0, ddist(eye(4),liou(x)), atol=1e-4)
+    @test isapprox(2.0, ddist(eye(4),liou(x)), atol=1e-5)
     @test isapprox(2.0, ddistu(eye(2),x), atol=1e-5)
 
     @test isapprox(2.0, dnorm(eye(4)-liou(z)), atol=1e-5)
-    @test isapprox(2.0, ddist(eye(4),liou(z)), atol=1e-4)
+    @test isapprox(2.0, ddist(eye(4),liou(z)), atol=1e-5)
     @test isapprox(2.0, ddistu(eye(2),z), atol=1e-5)
 
     @test isapprox(2.0, dnorm(eye(4)-liou(y)), atol=1e-5)
-    @test isapprox(2.0, ddist(eye(4),liou(y)), atol=1e-4)
+    @test isapprox(2.0, ddist(eye(4),liou(y)), atol=1e-5)
     @test isapprox(2.0, ddistu(eye(2),y), atol=1e-5)
 
     @test isapprox(2.0, dnorm(liou(x)-liou(y)), atol=1e-5)
-    @test isapprox(2.0, ddist(liou(x),liou(y)), atol=1e-4)
+    @test isapprox(2.0, ddist(liou(x),liou(y)), atol=1e-5)
     @test isapprox(2.0, ddistu(x,y), atol=1e-5)
 
     @test isapprox(2.0, dnorm(liou(x)-liou(z)), atol=1e-5)
-    @test isapprox(2.0, ddist(liou(x),liou(z)), atol=1e-4)
+    @test isapprox(2.0, ddist(liou(x),liou(z)), atol=1e-5)
     @test isapprox(2.0, ddistu(x,z), atol=1e-5)
 
     @test isapprox(2.0, dnorm(liou(z)-liou(y)), atol=1e-5)
-    @test isapprox(2.0, ddist(liou(z),liou(y)), atol=1e-4)
+    @test isapprox(2.0, ddist(liou(z),liou(y)), atol=1e-5)
     @test isapprox(2.0, ddistu(z,y), atol=1e-5)
 end
 
@@ -56,7 +56,7 @@ end
     global vv = liou(v)
 
     @test isapprox(2.0, dnorm(uu*eye(4)-uu*liou(x)), atol=1e-5)
-    @test isapprox(2.0, ddist(uu*eye(4),uu*liou(x)), atol=1e-4)
+    @test isapprox(2.0, ddist(uu*eye(4),uu*liou(x)), atol=1e-5)
     @test isapprox(2.0, ddistu(u*eye(2),u*x), atol=1e-5)
 
     @test isapprox(2.0, dnorm(uu*eye(4)-uu*liou(z)), atol=1e-5)
@@ -76,7 +76,7 @@ end
     @test isapprox(2.0, ddistu(u*x,u*z), atol=1e-5)
 
     @test isapprox(2.0, dnorm(uu*liou(z)-uu*liou(y)), atol=1e-5)
-    @test isapprox(2.0, ddist(uu*liou(z),uu*liou(y)), atol=1e-4)
+    @test isapprox(2.0, ddist(uu*liou(z),uu*liou(y)), atol=1e-5)
     @test isapprox(2.0, ddistu(u*z,u*y), atol=1e-5)
 end
 
@@ -92,7 +92,7 @@ pauli = Matrix{ComplexF64}[eye(2), x, y, z]
 
         calc_dnorm1 = ddist(pc1,pc2)
 
-        @test isapprox(pauli_dnorm, calc_dnorm1, atol=2e-1)
+        @test isapprox(pauli_dnorm, calc_dnorm1, atol=1e-5)
     end
 end
 
