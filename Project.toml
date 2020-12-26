@@ -11,7 +11,7 @@ SCS = "c946c3f1-0d1f-5ce8-9dea-7daa1f7e2d13"
 SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
 
 [compat]
-CodecBzip2 = "0.6.0"
+CodecBzip2 = "0.6.0, 0.7"
 Convex = "0.11.0"
 SCS = "0.5.1"
 julia = "1.0"
