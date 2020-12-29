@@ -164,7 +164,7 @@ let # wat09b
         prob.constraints += Convex.isposdef( ϕ(Mr,Mi) - ϕ(Wr,Wi) )
 
         Convex.solve!(prob, SCS.Optimizer(verbose=0, eps=1e-6, max_iters=5_000,
-            acceleration_lookback=1, alpha=1.9))
+            acceleration_lookback=1, alpha=1.9, linear_solver=SCS.Direct))
 
         if string(prob.status) != "OPTIMAL"
             #println("DNORM_CPTP warning.")
@@ -218,7 +218,7 @@ let # wat09b
         prob.constraints += Convex.isposdef( ϕ(Zr,Zi) - ϕ(Jr,Ji) )
 
         Convex.solve!(prob, SCS.Optimizer(verbose=0, eps=1e-6, max_iters=5_000,
-            acceleration_lookback=1, alpha=1.9))
+            acceleration_lookback=1, alpha=1.9, linear_solver=SCS.Direct))
 
         if string(prob.status) != "OPTIMAL"
             #println("DNORM_CPTP warning.")
@@ -282,7 +282,7 @@ let # wat13b
         prob.constraints += Convex.isposdef( ϕ( [ Y0r -Jr ; -Jr' Y1r ], [ Y0i -Xi ; Xi' Y1i ] ) )
 
         Convex.solve!(prob, SCS.Optimizer(verbose=0, eps=1e-6, max_iters=5_000,
-            acceleration_lookback=1, alpha=1.9))
+            acceleration_lookback=1, alpha=1.9, linear_solver=SCS.Direct))
 
         if string(prob.status) != "OPTIMAL"
             #println("DNORM_CPTP warning.")
@@ -353,7 +353,7 @@ let # wat13b
         prob.constraints += Convex.isposdef( ϕ( [ Mρ0r Xr ; Xr' Mρ1r ], [ Mρ0i Xi ; -Xi' Mρ1i ] ) )
 
         Convex.solve!(prob, SCS.Optimizer(verbose=0, eps=1e-6, max_iters=5_000,
-            acceleration_lookback=1, alpha=1.9))
+            acceleration_lookback=1, alpha=1.9, linear_solver=SCS.Direct))
 
         if string(prob.status) != "OPTIMAL"
             #println("DNORM warning.")
