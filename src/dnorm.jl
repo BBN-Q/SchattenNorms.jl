@@ -186,6 +186,10 @@ superoperators must be represented in column major form.
 """
 function dnormcptp end
 
+# Takes many more iterations to converge than dnorcptp.
+# Difference in new max/min convec objectives or trace
+# and operator norm?
+
 let # wat09b
     global dnormcptp
     local prev_dy, F
