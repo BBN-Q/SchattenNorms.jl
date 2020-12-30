@@ -163,10 +163,10 @@ let # wat09b
         prob.constraints += Convex.isposdef( ϕ(Wr,Wi) )
         prob.constraints += Convex.isposdef( ϕ(Mr,Mi) - ϕ(Wr,Wi) )
 
-        Convex.solve!(prob, SCSSolver(verbose=0, eps=1e-6, max_iters=5_000,
-            acceleration_lookback=1, alpha=1.9))
+        Convex.solve!(prob, SCS.Optimizer(verbose=0, eps=1e-6, max_iters=5_000,
+            acceleration_lookback=1, alpha=1.9, linear_solver=SCS.DirectSolver))
 
-        if prob.status != :Optimal
+        if string(prob.status) != "OPTIMAL"
             #println("DNORM_CPTP warning.")
             #println("Input: $(L)")
             #println("Input's Choi spectrum: $(eigvals(liou2choi(L)))")
@@ -185,6 +185,10 @@ positive and trace preserving superoperators `L1` and `L2` . The
 superoperators must be represented in column major form.
 """
 function dnormcptp end
+
+# Takes many more iterations to converge than dnorcptp.
+# Difference in new max/min convec objectives or trace
+# and operator norm?
 
 let # wat09b
     global dnormcptp
@@ -217,10 +221,10 @@ let # wat09b
         prob.constraints += Convex.isposdef( ϕ(Zr,Zi) )
         prob.constraints += Convex.isposdef( ϕ(Zr,Zi) - ϕ(Jr,Ji) )
 
-        Convex.solve!(prob, SCSSolver(verbose=0, eps=1e-6, max_iters=5_000,
-            acceleration_lookback=1, alpha=1.9))
+        Convex.solve!(prob, SCS.Optimizer(verbose=0, eps=1e-6, max_iters=5_000,
+            acceleration_lookback=1, alpha=1.9, linear_solver=SCS.DirectSolver))
 
-        if prob.status != :Optimal
+        if string(prob.status) != "OPTIMAL"
             #println("DNORM_CPTP warning.")
             #println("Input: $(L)")
             #println("Input's Choi spectrum: $(eigvals(liou2choi(L)))")
@@ -281,10 +285,10 @@ let # wat13b
         prob.constraints += Convex.isposdef( ϕ(Y1r,Y1i) )
         prob.constraints += Convex.isposdef( ϕ( [ Y0r -Jr ; -Jr' Y1r ], [ Y0i -Xi ; Xi' Y1i ] ) )
 
-        Convex.solve!(prob, SCSSolver(verbose=0, eps=1e-6, max_iters=5_000,
-            acceleration_lookback=1, alpha=1.9))
+        Convex.solve!(prob, SCS.Optimizer(verbose=0, eps=1e-6, max_iters=5_000,
+            acceleration_lookback=1, alpha=1.9, linear_solver=SCS.DirectSolver))
 
-        if prob.status != :Optimal
+        if string(prob.status) != "OPTIMAL"
             #println("DNORM_CPTP warning.")
             #println("Input: $(L)")
             #println("Input's Choi spectrum: $(eigvals(liou2choi(L)))")
@@ -352,10 +356,10 @@ let # wat13b
 
         prob.constraints += Convex.isposdef( ϕ( [ Mρ0r Xr ; Xr' Mρ1r ], [ Mρ0i Xi ; -Xi' Mρ1i ] ) )
 
-        Convex.solve!(prob, SCSSolver(verbose=0, eps=1e-6, max_iters=5_000,
-            acceleration_lookback=1, alpha=1.9))
+        Convex.solve!(prob, SCS.Optimizer(verbose=0, eps=1e-6, max_iters=5_000,
+            acceleration_lookback=1, alpha=1.9, linear_solver=SCS.DirectSolver))
 
-        if prob.status != :Optimal
+        if string(prob.status) != "OPTIMAL"
             #println("DNORM warning.")
             #println("Input: $(L)")
             #println("Input's Choi spectrum: $(eigvals(liou2choi(L)))")

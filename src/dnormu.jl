@@ -78,7 +78,7 @@ See `ddistu` for a similar implementation of `dnorm` customized
 to the difference between unitary operations.
 
 """
-ddist(E::Matrix,F::Matrix) = dnormcptp(E,F)
+ddist(E::Matrix,F::Matrix) = dnormcptp2(E,F)
 
 """
 ddist(U,V)
