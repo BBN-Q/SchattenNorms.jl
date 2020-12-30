@@ -1,5 +1,5 @@
 name = "SchattenNorms"
-uuid = "30c3f2e4-bcb7-4cb6-94c2-d15749625358"
+uuid = "03bc5d91-8e1a-555a-857b-eaff090ecb7c"
 authors = ["Marcus P da Silva"]
 version = "0.1.0"
 
@@ -13,12 +13,14 @@ SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
 [compat]
 CodecBzip2 = "0.6.0"
 Convex = "0.11.0, 0.13"
-SCS = "0.5.1, 0.7"
+SCS = "0.7"
 julia = "1.0"
 
 [extras]
+Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
+QuantumInfo = "bedefb8d-ef00-5401-aa81-ae9c3f6f84cc"
 Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [targets]
-test = ["Test", "Random"]
+test = ["Distributions", "QuantumInfo", "Random", "Test"]
