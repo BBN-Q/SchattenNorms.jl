@@ -2,6 +2,8 @@
 
 ![Build Status](https://github.com/BBN-Q/SchattenNorms.jl/workflows/CI/badge.svg)
 
+[![codecov](https://codecov.io/gh/BBN-Q/SchattenNorms.jl/branch/master/graph/badge.svg?token=Eza31czrf0)](https://codecov.io/gh/BBN-Q/SchattenNorms.jl)
+
 Simple implementation of Schatten norms. This package includes the
 complete bounded versions of the induced norms for linear
 transformations of matrices (i.e., *superoperators*), implemented as

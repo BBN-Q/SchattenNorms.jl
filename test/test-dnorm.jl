@@ -83,13 +83,18 @@ end
 @testset "dnorm for Pauli channels" begin
 pauli = Matrix{ComplexF64}[eye(2), x, y, z]
     for i in 1:10
+        # choose two, random Pauli weights I + X + Y + Z and calculate
+        # the norm between them
+        # p1 = rand(Random.seed!(time_ns() & 0x00000111), 4); p1 = p1/sum(p1)
+        # p2 = rand(Random.seed!(time_ns() & 0x00000111), 4); p2 = p2/sum(p2)
         p1 = rand(4); p1 = p1/sum(p1)
         p2 = rand(4); p2 = p2/sum(p2)
         pauli_dnorm = norm(p1-p2,1)
 
+        # Send the same two Pauli mixtures as superoperators, through 
+        # the ddist function
         pc1 = sum([ p1[ii+1]*liou(pauli[ii+1]) for ii in 0:3])
         pc2 = sum([ p2[ii+1]*liou(pauli[ii+1]) for ii in 0:3])
-
         calc_dnorm1 = ddist(pc1,pc2)
 
         @test isapprox(pauli_dnorm, calc_dnorm1, atol=1e-5)
@@ -124,16 +129,14 @@ end
             global uu = liou(u)
             global v = rand_unitary(d)
             global vv = liou(v)
-            @test isapprox(ddistu(u,v), ddist(uu,vv), atol=1e-4)
+            @test isapprox(ddistu(u,v), ddist(uu,vv), atol=1e-5)
         end
     end
 
     for i in 1:20
         for d in [2,3,4]
             global u = rand_unitary(d)
-            global uu = liou(u)
             global v = rand_unitary(d)
-            global vv = liou(v)
 
             global duv  = ddistu(u,v)
             global duv2 = ddistu(u*v',eye(d))
